@@ -1,6 +1,7 @@
 name: "Docker Build"
 
-on: #触发条件
+on:
+  workflow_dispatch:
 #  push: # 1.推送
 #    branches: [ "main" ]
     
