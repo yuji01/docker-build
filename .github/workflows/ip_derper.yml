@@ -15,21 +15,21 @@ jobs:
     runs-on: ubuntu-latest #申请一个ubuntu的虚拟机
 
     steps:
-    - name: Checkout Code # 第一步，获取代码
-      uses: actions/checkout@v4 # 官方的action，获取代码
+      - name: Checkout Code # 第一步，获取代码
+        uses: actions/checkout@v4 # 官方的action，获取代码
 
-    - name: Build image # 第二步，构建docker镜像
-      run: |
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper \
-          -f Dockerfile \
-          ./ip_derper
+      - name: Build image # 第二步，构建docker镜像
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper \
+            -f Dockerfile \
+            ./ip_derper
 
-    - name: Log in to Docker Hub # 登录docker hub
-      uses: docker/login-action@v3  # 三方的action操作， 执行docker login
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }} 
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Log in to Docker Hub # 登录docker hub
+        uses: docker/login-action@v3  # 三方的action操作， 执行docker login
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }} 
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Push image # 第四步，推送镜像到docker hub 
-      run: |
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper
+      - name: Push image # 第四步，推送镜像到docker hub 
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper
