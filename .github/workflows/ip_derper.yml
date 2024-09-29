@@ -22,8 +22,8 @@ jobs:
         run: |
           ls -la
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper \
-            -f Dockerfile \
-            ./ip_derper
+            -f ./ip_derper/Dockerfile \
+            .
 
       - name: Log in to Docker Hub # 登录docker hub
         uses: docker/login-action@v3  # 三方的action操作， 执行docker login
