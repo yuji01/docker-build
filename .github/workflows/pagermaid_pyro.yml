@@ -1,0 +1,64 @@
+name: "Docker Build PagerMaid-Pyro"
+
+# Controls when the action will run. 
+on:
+  workflow_dispatch: # 手动运行
+#  push: # 推送
+#    branches: [ "main" ]
+
+#  pull_request: # 拉取
+#    branches: [ "main" ]
+    
+#  watch: # 手动点击收藏
+#    types: [started]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: docker build and publish
+    env:
+      DOCKER_BUILDKIT: 1
+      DOCKER_CLI_EXPERIMENTAL: enabled
+      DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/pagermaid_pyro
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Buildx cache
+        uses: actions/cache@v4
+        id: buildx-cache
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx
+
+      - name: Get version
+        run: |
+          #RAW_PGM_VERSION=$(python .github/get_version.py)
+          #echo "PGM_VERSION=${RAW_PGM_VERSION}" >> "$GITHUB_ENV"
+          PGM_VERSION=1.5.0
+
+      - name: Build
+        run: |
+          docker buildx build \
+            --cache-from "type=local,src=/tmp/.buildx-cache" \
+            --cache-to "type=local,dest=/tmp/.buildx-cache" \
+            --output "type=image,push=true" \
+            --platform "linux/amd64,linux/arm64/v8" \
+            --build-arg "S6_ARCH=amd64" \
+            --tag "${DOCKERHUB_REPOSITORY}:latest" \
+            --tag "${DOCKERHUB_REPOSITORY}:${PGM_VERSION}" \
+            -f ./PagerMaid-Pyro/Dockerfile \
+            .
