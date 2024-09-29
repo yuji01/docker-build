@@ -20,6 +20,7 @@ jobs:
 
       - name: Build image # 第二步，构建docker镜像
         run: |
+          ls -la \
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper \
             -f Dockerfile \
             ./ip_derper
