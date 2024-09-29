@@ -1,14 +1,14 @@
 name: "Docker Build ip_derper"
 
 on:
-  workflow_dispatch:
-#  push: # 1.推送
+  workflow_dispatch: # 手动运行
+#  push: # 推送
+#    branches: [ "main" ]
+
+#  pull_request: # 拉取
 #    branches: [ "main" ]
     
-#  pull_request: # 2.拉取
-#    branches: [ "main" ]
-    
-#  watch: # 3.手动点击收藏
+#  watch: # 手动点击收藏
 #    types: [started]
 jobs:
   build_image:
@@ -19,13 +19,17 @@ jobs:
       uses: actions/checkout@v4 # 官方的action，获取代码
 
     - name: Build image # 第二步，构建docker镜像
-      run: docker build . --file ./ip_derper/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCK_IMAGE_NAME }}
+      run: |
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper \
+          -f Dockerfile \
+          ./ip_derper
 
-    - name: Log in to Docker Hub # 第三步，登录docker hub
+    - name: Log in to Docker Hub # 登录docker hub
       uses: docker/login-action@v3  # 三方的action操作， 执行docker login
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}  # 配置dockerhub的认证，在Github项目主页 【Settings】 -> 【Secrets】 添加对应变量
+        username: ${{ secrets.DOCKERHUB_USERNAME }} 
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
+
     - name: Push image # 第四步，推送镜像到docker hub 
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCK_IMAGE_NAME }}
+      run: |
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/ip_derper
