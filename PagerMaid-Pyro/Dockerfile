@@ -9,17 +9,6 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
 SHELL ["/bin/bash", "-c"]
 WORKDIR /pagermaid/workdir
 
-# 如果设置了 SOCKS5_PROXY 环境变量，则使用它
-ARG SOCKS5_PROXY
-RUN if [ -n "$SOCKS5_PROXY" ]; then \
-        echo "Using SOCKS5 proxy: $SOCKS5_PROXY"; \
-        echo "export ALL_PROXY=socks5://$SOCKS5_PROXY" >> /etc/profile; \
-        echo "export http_proxy=socks5://$SOCKS5_PROXY" >> /etc/profile; \
-        echo "export https_proxy=socks5://$SOCKS5_PROXY" >> /etc/profile; \
-    else \
-        echo "No SOCKS5 proxy set, proceeding without proxy."; \
-    fi
-
 RUN source ~/.bashrc \
     ## 安装运行环境依赖，自编译建议修改为国内镜像源
 #   && sed -i 's/archive.ubuntu.com/mirrors.bfsu.edu.cn/g' /etc/apt/sources.list \
