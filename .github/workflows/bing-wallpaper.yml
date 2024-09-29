@@ -1,0 +1,38 @@
+name: "Docker Build bing-wallpaper"
+
+on:
+  workflow_dispatch: # 手动运行
+#  push: # 推送
+#    branches: [ "main" ]
+
+#  pull_request: # 拉取
+#    branches: [ "main" ]
+    
+#  watch: # 手动点击收藏
+#    types: [started]
+jobs:
+  build_image:
+    runs-on: ubuntu-latest #申请一个ubuntu的虚拟机
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/bing-wallpaper
+
+    steps:
+      - name: Checkout Code # 第一步，获取代码
+        uses: actions/checkout@v4 # 官方的action，获取代码
+
+      - name: Build image # 第二步，构建docker镜像
+        run: |
+          docker build -t ${DOCKERHUB_REPOSITORY} \
+            -f bing-wallpaper/Dockerfile \
+            .
+
+      - name: Log in to Docker Hub # 登录docker hub
+        uses: docker/login-action@v3  # 三方的action操作， 执行docker login
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }} 
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push image # 第四步，推送镜像到docker hub 
+        run: |
+          docker push ${DOCKERHUB_REPOSITORY}
