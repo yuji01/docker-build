@@ -3,7 +3,7 @@ FROM php:8.1-fpm-alpine
 
 # 安装 Nginx 并配置 PHP-FPM
 RUN apk --no-cache add nginx \
-    && mkdir /run/nginx \
+    && mkdir -p /run/nginx \
     && mkdir -p /var/www/html \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
