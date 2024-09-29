@@ -48,7 +48,7 @@ jobs:
         run: |
           #RAW_PGM_VERSION=$(python .github/get_version.py)
           #echo "PGM_VERSION=${RAW_PGM_VERSION}" >> "$GITHUB_ENV"
-          PGM_VERSION=1.5.0
+          echo "PGM_VERSION=1.5.0" >> "$GITHUB_ENV"
 
       - name: Build
         run: |
