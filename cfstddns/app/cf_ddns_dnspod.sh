@@ -181,7 +181,7 @@ while [[ ${x} -lt $num ]]; do
                     # check if the update was successful
                     STATUS=$(echo "$RESPONSE" | jq -r '.status.code')
                     if [ "$STATUS" == "1" ]; then
-                      echo "$CDNhostname更新成功"
+                      echo "$CDNhostname更新成功，速度为 $ipSpeed MB/s"
                     else
                       echo "$CDNhostname更新失败"
                     fi
