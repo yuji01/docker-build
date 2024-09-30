@@ -57,4 +57,3 @@ RUN set -ex \
 
 # 暴露必要的端口
 EXPOSE 80 443
-ENTRYPOINT ["/docker-entrypoint.d/40-mtproxy-start.sh"]
