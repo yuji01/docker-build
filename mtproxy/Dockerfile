@@ -27,13 +27,10 @@ ENV WORKDIR=/home/mtproxy
 # 设置工作目录
 WORKDIR $WORKDIR
 
-# 复制第一阶段的构建结果到最终运行时镜像
-COPY --from=build $WORKDIR/build/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto-proxy
-
 # setup config
 RUN set -ex \
     && apt-get update \
-    && apt install -y --no-install-recommends git wget curl iproute2 php7.4-fpm vim-common net-tools ntpdate procps\
+    && apt install -y --no-install-recommends git \
     && git clone https://github.com/ellermister/mtproxy.git $WORKDIR \
     && cd $WORKDIR \
     && cp src/* /usr/share/nginx/html \
@@ -47,6 +44,20 @@ RUN set -ex \
     && sed -i 's/^group\s*=[^\r]\+/group = root/' /etc/php/7.4/fpm/pool.d/www.conf \
     && mkdir /run/php -p \
     && mkdir $WORKDIR/pid \
+    && apt-get clean \
+    && apt-get autoremove --purge -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# 复制第一阶段的构建结果到最终运行时镜像
+COPY --from=build $WORKDIR/build/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto-proxy
+
+RUN set -ex \
+    && apt-get update \
+    && apt install -y --no-install-recommends git wget curl iproute2 php7.4-fpm vim-common net-tools ntpdate procps\
+    && sed -i 's/^user\s*=[^\r]\+/user = root/' /etc/php/7.4/fpm/pool.d/www.conf \
+    && sed -i 's/^group\s*=[^\r]\+/group = root/' /etc/php/7.4/fpm/pool.d/www.conf \
+    && mkdir /run/php -p && mkdir $WORKDIR/pid \\
+	&& apt-get purge -y git build-essential libssl-dev zlib1g-dev \
     && apt-get clean \
     && apt-get autoremove --purge -y \
     && rm -rf /var/lib/apt/lists/*
