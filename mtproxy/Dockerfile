@@ -15,7 +15,8 @@ RUN apt update \
     && cd MTProxy \
     && make \
     && cd objs/bin \
-    && ls -l
+    && chmod +x mtproto-proxy \
+    && echo "编译mtproto-proxy成功"
 
 # 第二阶段：最终运行阶段
 FROM --platform=$TARGETPLATFORM nginx:1.23.2
