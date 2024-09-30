@@ -1,0 +1,7 @@
+services:
+    cfstddns:
+        image: 'yujibuzailai/cfstddns:latest'
+        volumes:
+            - './config.conf:/app/config/config.conf'
+        restart: always
+        container_name: cfstddns
