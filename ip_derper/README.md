@@ -21,31 +21,31 @@ inserts this into tailscale ACLs: https://login.tailscale.com/admin/acls
 	"derpMap": {
 		//"OmitDefaultRegions": true, //禁用其他中转服务器
 		"Regions": {
-			"1":  null,
-			"2":  null,
-			"3":  null,
-			"4":  null,
-			"5":  null,
-			"6":  null,
-			"7":  null,
-			"8":  null,
-			"9":  null,
-			"10": null,
-			"11": null,
-			"12": null,
-			"13": null,
-			"14": null,
-			"15": null,
-			"16": null,
-			"17": null,
-			"18": null,
-			"19": null,
-			//"20": null, 香港V6不禁用
-			"21": null,
-			"22": null,
-			"23": null,
-			"24": null,
-			"25": null,
+			"1": null, //纽约-美国
+			"2": null, //旧金山-美国
+			//"3":  null, //新加坡
+			"4": null, //法兰克福-德国
+			"5": null, //悉尼-澳大利亚
+			"6": null, //班加罗尔-印度
+			//"7":  null, //东京-日本
+			"8":  null, //伦敦-英国
+			"9":  null, //达拉斯-美国
+			"10": null, //西雅图-美国
+			"11": null, //圣保罗-巴西
+			"12": null, //芝加哥-美国
+			"13": null, //丹佛-美国
+			"14": null, //阿姆斯特丹-荷兰
+			"15": null, //約翰尼斯堡-南非
+			"16": null, //迈阿密-美国
+			//"17": null, //洛杉矶-美国
+			"18": null, //巴黎-法国
+			"19": null, //马德里-西班牙
+			//"20": null, //香港不禁用
+			"21": null, //多伦多-加拿大
+			"22": null, //华沙-波兰
+			"23": null, //杜拜-阿联酋
+			"24": null, //檀香山-美国
+			"25": null, //奈洛比-肯尼亚
 			"901": {
 				"RegionID":   901,
 				"RegionCode": "Myself",
