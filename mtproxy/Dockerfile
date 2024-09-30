@@ -8,12 +8,14 @@ ENV WORKDIR=/home/mtproxy
 WORKDIR $WORKDIR
 
 RUN apt update \
-    && apt install -y git curl  build-essential libssl-dev zlib1g-dev \
+    && apt install -y git curl build-essential libssl-dev zlib1g-dev \
     && mkdir build \
-	&& cd build \
+    && cd build \
     && git clone https://github.com/ellermister/MTProxyC --depth=1 MTProxy \
-    && cd MTProxy && make && cd objs/bin &&  chmod +x mtproto-proxy \
-    && if [ ! -f "./mtproto-proxy" ]; then echo "mtproto-proxy 编译失败" ; exit 1; fi 
+    && cd MTProxy \
+    && make \
+    && cd objs/bin \
+    && ls -l
 
 # 第二阶段：最终运行阶段
 FROM --platform=$TARGETPLATFORM nginx:1.23.2
@@ -25,7 +27,7 @@ ENV WORKDIR=/home/mtproxy
 WORKDIR $WORKDIR
 
 # 复制第一阶段的构建结果到最终运行时镜像
-COPY --from=build $WORKDIR/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto-proxy
+COPY --from=build $WORKDIR/build/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto-proxy
 
 # setup config
 RUN set -ex \
