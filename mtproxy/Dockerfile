@@ -24,7 +24,7 @@ ENV WORKDIR=/home/mtproxy
 WORKDIR $WORKDIR
 
 # 复制第一阶段的构建结果到最终运行时镜像
-COPY --from=build $WORKDIR/MTProxy/mtproto-proxy $WORKDIR/mtproto-proxy
+COPY --from=build $WORKDIR/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto-proxy
 
 # setup config
 RUN set -ex \
