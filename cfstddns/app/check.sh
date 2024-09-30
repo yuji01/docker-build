@@ -33,6 +33,9 @@ fi
 cp $WORKDIR/config/ip.txt $WORKDIR/ip.txt
 cp $WORKDIR/config/ipv6.txt $WORKDIR/ipv6.txt
 
+# 复制proxychain配置文件
+cp $WORKDIR/config/proxychains.conf /etc/proxychains/proxychains.conf
+
 
 if [ $IP_TO_DNSPOD -eq 1 ] || [ $IP_TO_CF -eq 1 ] || [ $IP_TO_HOSTS -eq 1 ]
 then
