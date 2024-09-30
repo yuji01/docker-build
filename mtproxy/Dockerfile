@@ -56,8 +56,8 @@ RUN set -ex \
     && apt install -y --no-install-recommends git wget curl iproute2 php7.4-fpm vim-common net-tools ntpdate procps\
     && sed -i 's/^user\s*=[^\r]\+/user = root/' /etc/php/7.4/fpm/pool.d/www.conf \
     && sed -i 's/^group\s*=[^\r]\+/group = root/' /etc/php/7.4/fpm/pool.d/www.conf \
-    && mkdir /run/php -p && mkdir $WORKDIR/pid \\
-	&& apt-get purge -y git build-essential libssl-dev zlib1g-dev \
+    && mkdir /run/php -p && mkdir $WORKDIR/pid \
+    && apt-get purge -y git build-essential libssl-dev zlib1g-dev \
     && apt-get clean \
     && apt-get autoremove --purge -y \
     && rm -rf /var/lib/apt/lists/*
