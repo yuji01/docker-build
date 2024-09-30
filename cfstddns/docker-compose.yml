@@ -2,6 +2,7 @@ services:
     cfstddns:
         image: 'yujibuzailai/cfstddns:latest'
         volumes:
-            - './config.conf:/app/config/config.conf'
+            - './config.conf:/app/config/config.conf' # 配置文件
+            - './proxychains.conf:/app/config/proxychains.conf' # proxychain 配置文件
         restart: always
         container_name: cfstddns
