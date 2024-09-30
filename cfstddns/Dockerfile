@@ -9,7 +9,7 @@ COPY app .
 
 # 根据架构下载不同版本的 CloudflareST
 RUN apk update \
-    && apk add --no-cache bash jq wget curl tar sed gawk coreutils dcron tzdata \
+    && apk add --no-cache bash jq wget curl tar sed gawk coreutils dcron tzdata proxychains-ng \
     && mkdir $WORKDIR/tmp \
     # 根据平台动态下载 CloudflareST
     && if [ "$(uname -m)" = "x86_64" ]; then \
