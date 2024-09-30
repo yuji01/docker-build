@@ -31,7 +31,8 @@ COPY --from=build $WORKDIR/build/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto
 
 # setup config
 RUN set -ex \
-    && apt install git -y \
+    && apt-get update \
+    && apt install -y --no-install-recommends git wget curl iproute2 php7.4-fpm vim-common net-tools ntpdate procps\
     && git clone https://github.com/ellermister/mtproxy.git $WORKDIR \
     && cd $WORKDIR \
     && cp src/* /usr/share/nginx/html \
@@ -40,15 +41,11 @@ RUN set -ex \
     && chmod +x /docker-entrypoint.d/40-mtproxy-start.sh \
     && cp -f nginx/default.conf /etc/nginx/conf.d/default.conf \
     && cp -f nginx/ip_white.conf /etc/nginx/ip_white.conf \
-    && cp -f nginx/nginx.conf /etc/nginx/nginx.conf
-
-# install php
-RUN set -ex \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends wget curl iproute2 php7.4-fpm vim-common net-tools ntpdate procps \
+    && cp -f nginx/nginx.conf /etc/nginx/nginx.conf \
     && sed -i 's/^user\s*=[^\r]\+/user = root/' /etc/php/7.4/fpm/pool.d/www.conf \
     && sed -i 's/^group\s*=[^\r]\+/group = root/' /etc/php/7.4/fpm/pool.d/www.conf \
-    && mkdir /run/php -p && mkdir $WORKDIR/pid \
+    && mkdir /run/php -p \
+    && mkdir $WORKDIR/pid \
     && apt-get clean \
     && apt-get autoremove --purge -y \
     && rm -rf /var/lib/apt/lists/*
