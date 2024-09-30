@@ -1,0 +1,11 @@
+services:
+    mtproxy:
+        container_name: mtproxy
+        restart: always
+        environment:
+            - domain=cloudflare.com
+            - secret=548593a9c0688f4f7d9d57377897d964
+            - ip_white_list=OFF
+        ports:
+            - 443:443
+        image: yujibuzailai/mtproxy:latest
