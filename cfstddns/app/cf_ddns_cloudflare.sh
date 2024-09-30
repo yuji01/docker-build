@@ -124,7 +124,7 @@ while [[ ${x} -lt $num ]]; do
       fi
   
       if [[ $resSuccess = "true" ]]; then
-        echo "$CDNhostname更新成功"
+        echo "$CDNhostname更新成功，速度为 $ipSpeed MB/s"
       else
         echo "$CDNhostname更新失败"
       fi
