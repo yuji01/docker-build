@@ -40,8 +40,7 @@ RUN set -ex \
     && cp -f nginx/default.conf /etc/nginx/conf.d/default.conf \
     && cp -f nginx/ip_white.conf /etc/nginx/ip_white.conf \
     && cp -f nginx/nginx.conf /etc/nginx/nginx.conf \
-    && sed -i 's/port=8443/port=8443/g; s/web_port=8888/web_port=8080/g' $WORKDIR/mtp_config.example \
-	&& sed -i 's/secret="4451023506896290666356006a67ce93"/secret="8d01d80087be0c4f86d67ebe65b5ef02"/g' $WORKDIR/mtp_config.example
+    && sed -i 's/port=8443/port=8443/g; s/web_port=8888/web_port=8080/g' $WORKDIR/mtp_config.example
 
 # 复制第一阶段的构建结果到最终运行时镜像
 COPY --from=build $WORKDIR/build/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto-proxy
