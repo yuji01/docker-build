@@ -8,7 +8,7 @@ ENV WORKDIR=/home/mtproxy
 WORKDIR $WORKDIR
 
 RUN apt update \
-    && apt install apt install -y git curl  build-essential libssl-dev zlib1g-dev \
+    && apt install -y git curl  build-essential libssl-dev zlib1g-dev \
     && mkdir build \
 	&& cd build \
     && git clone https://github.com/ellermister/MTProxyC --depth=1 MTProxy \
