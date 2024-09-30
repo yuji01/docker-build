@@ -23,9 +23,9 @@ jobs:
 
       - name: Build image # 构建docker镜像
         run: |
-          docker build --no-cache -t ${DOCKERHUB_REPOSITORY} \
-            -f mtproxy/Dockerfile \
-            .
+         # docker build --no-cache -t ${DOCKERHUB_REPOSITORY} \
+         #   -f mtproxy/Dockerfile \
+         #   .
           docker build --no-cache -t ${DOCKERHUB_REPOSITORY}:alpine \
             -f mtproxy/Dockerfile-alpine \
             .
