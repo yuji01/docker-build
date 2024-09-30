@@ -191,7 +191,7 @@ while [[ ${x} -lt $num ]]; do
                     # check if the creation was successful
                     STATUS=$(echo "$RESPONSE" | jq -r '.status.code')
                     if [ "$STATUS" == "1" ]; then
-                      echo "$CDNhostname添加成功"
+                      echo "$CDNhostname添加成功，速度为 $ipSpeed MB/s"
                     else
                       echo "$CDNhostname添加失败"
                     fi
@@ -206,7 +206,7 @@ while [[ ${x} -lt $num ]]; do
         # check if the creation was successful
         STATUS=$(echo "$RESPONSE" | jq -r '.status.code')
         if [ "$STATUS" == "1" ]; then
-          echo "$CDNhostname添加成功"
+          echo "$CDNhostname添加成功，速度为 $ipSpeed MB/s"
         else
           echo "$CDNhostname添加失败"
         fi
