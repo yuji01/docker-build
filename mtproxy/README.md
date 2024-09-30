@@ -12,3 +12,9 @@
         ports:
             - 443:443 # 右边端口是443
 ```
+
+- 如何自定义secret？
+
+```shell
+secret=$(head -c 16 /dev/urandom | xxd -ps)
+```
