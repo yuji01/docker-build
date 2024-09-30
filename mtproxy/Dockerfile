@@ -12,7 +12,8 @@ RUN apt update \
     && mkdir build \
 	&& cd build \
     && git clone https://github.com/ellermister/MTProxyC --depth=1 MTProxy \
-    && cd MTProxy && make && cd objs/bin &&  chmod +x mtproto-proxy
+    && cd MTProxy && make && cd objs/bin && ls $PWD/mtproto-proxy \
+    && chmod +x mtproto-proxy
 
 # 第二阶段：最终运行阶段
 FROM --platform=$TARGETPLATFORM nginx:1.23.2
