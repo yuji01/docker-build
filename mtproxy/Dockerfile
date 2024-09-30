@@ -39,14 +39,7 @@ RUN set -ex \
     && chmod +x /docker-entrypoint.d/40-mtproxy-start.sh \
     && cp -f nginx/default.conf /etc/nginx/conf.d/default.conf \
     && cp -f nginx/ip_white.conf /etc/nginx/ip_white.conf \
-    && cp -f nginx/nginx.conf /etc/nginx/nginx.conf \
-    && sed -i 's/^user\s*=[^\r]\+/user = root/' /etc/php/7.4/fpm/pool.d/www.conf \
-    && sed -i 's/^group\s*=[^\r]\+/group = root/' /etc/php/7.4/fpm/pool.d/www.conf \
-    && mkdir /run/php -p \
-    && mkdir $WORKDIR/pid \
-    && apt-get clean \
-    && apt-get autoremove --purge -y \
-    && rm -rf /var/lib/apt/lists/*
+    && cp -f nginx/nginx.conf /etc/nginx/nginx.conf
 
 # 复制第一阶段的构建结果到最终运行时镜像
 COPY --from=build $WORKDIR/build/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto-proxy
