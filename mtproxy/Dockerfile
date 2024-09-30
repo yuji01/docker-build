@@ -1,5 +1,5 @@
 # 第一阶段：编译和构建代码，使用 Debian 作为基础镜像，其中build是一个标志
-FROM debian AS build
+FROM ubuntu:latest AS build
 
 # 设置工作目录的环境变量
 ENV WORKDIR=/home/mtproxy
@@ -12,8 +12,8 @@ RUN apt update \
     && mkdir build \
 	&& cd build \
     && git clone https://github.com/ellermister/MTProxyC --depth=1 MTProxy \
-    && cd MTProxy && make && cd objs/bin && ls $PWD/mtproto-proxy \
-    && chmod +x mtproto-proxy
+    && cd MTProxy && make && cd objs/bin &&  chmod +x mtproto-proxy \
+    && if [ ! -f "./mtproto-proxy" ]; then echo "mtproto-proxy 编译失败" ; exit 1; fi 
 
 # 第二阶段：最终运行阶段
 FROM --platform=$TARGETPLATFORM nginx:1.23.2
