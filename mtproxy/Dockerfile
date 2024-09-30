@@ -31,7 +31,8 @@ COPY --from=build $WORKDIR/build/MTProxy/objs/bin/mtproto-proxy $WORKDIR/mtproto
 
 # setup config
 RUN set -ex \
-	&& git clone https://github.com/ellermister/mtproxy.git $WORKDIR \
+    && apt install git -y \
+    && git clone https://github.com/ellermister/mtproxy.git $WORKDIR \
     && cd $WORKDIR \
     && cp src/* /usr/share/nginx/html \
     && rm -rf .git \
