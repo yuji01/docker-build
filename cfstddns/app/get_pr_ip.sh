@@ -22,7 +22,7 @@ rm -rf $WORKDIR/tmp/ip.zip
 cat $WORKDIR/tmp/allip/*-$port.txt >  $WORKDIR/pr_ip.txt
 
 if [ -f $WORKDIR/pr_ip.txt ]; then
-  echo "成功获取反代ip"
+  echo "成功获取 $port 端口反代ip"
 fi
 
 #proxychains4 -q wget $PR_IP_ADDR -O $WORKDIR/pr_ip.txt && echo "成功获取反代ip"
