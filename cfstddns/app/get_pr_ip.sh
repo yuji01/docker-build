@@ -23,6 +23,10 @@ cat $WORKDIR/tmp/allip/*-$port.txt >  $WORKDIR/pr_ip.txt
 
 if [ -f $WORKDIR/pr_ip.txt ]; then
   echo "成功获取 $port 端口反代ip"
+else
+  echo "获取 $port 端口反代ip失败"
+  echo "获取 $port 端口反代ip失败" > $informlog
+  source $cf_push;
+  exit 1;
 fi
-
 #proxychains4 -q wget $PR_IP_ADDR -O $WORKDIR/pr_ip.txt && echo "成功获取反代ip"
