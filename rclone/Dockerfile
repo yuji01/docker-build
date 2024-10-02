@@ -1,7 +1,9 @@
-# 构建镜像
+# 构建镜像，参考官方Dockerfile https://github.com/rclone/rclone/blob/master/Dockerfile
 FROM alpine:latest
 
 WORKDIR /app
+
+COPY start.sh /app/start.sh
 
 RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
     && echo "user_allow_other" >> /etc/fuse.conf \
@@ -13,11 +15,10 @@ RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
     && cp rclone-${version}-linux-${OS_type}/rclone /usr/local/bin/rclone \
     # 删除多余文件
     && rm -rf rclone-${version}-linux-${OS_type}* \
-    && chmod +x /usr/local/bin/rclone
+    && chmod +x /usr/local/bin/rclone \
+    && chmod +x /app/start.sh
 
+# 创建用户和用户组
 RUN addgroup -g 1009 rclone && adduser -u 1009 -Ds /bin/sh -G rclone rclone
 
-ENTRYPOINT [ "rclone" ]
-
-
-ENV XDG_CONFIG_HOME=/config
+ENTRYPOINT [ "/app/start.sh" ]
