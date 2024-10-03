@@ -80,13 +80,17 @@ RUN source ~/.bashrc \
     && echo "pagermaid ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/pagermaid \
     && useradd pagermaid -r -m -d /pagermaid -s /bin/bash \
     && usermod -aG sudo,users pagermaid \
+
     ## 克隆仓库
     && git clone -b master https://github.com/TeamPGM/PagerMaid-Pyro.git /pagermaid/workdir \
     && git config --global pull.ff only \
+
     ## pip install
     && pip install -r requirements.txt \
+
     ## 修复google和其他
     && pip3 install cchardet magic_google jieba pinyin bs4 \
+
     ## 卸载编译依赖，清理安装缓存
     && sudo apt-get purge --auto-remove -y \
         build-essential \
