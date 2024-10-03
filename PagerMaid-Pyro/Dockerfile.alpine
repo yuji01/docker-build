@@ -17,12 +17,12 @@ COPY --from=builder /pagermaid/workdir /pagermaid/workdir
 
 RUN apk update \
     && apk add --no-cache proxychains-ng git bash imagemagick libmagic curl tzdata neofetch libzbar figlet fortune openssl tini \
-    && apk add --no-cache --update --virtual .build-deps gcc python3-dev musl-dev linux-headers \
+    && apk add --no-cache --update --virtual .build-deps gcc g++ python3-dev musl-dev linux-headers \
     && git config --global pull.ff only \
     && pip install -r requirements.txt \
 
     ## 修复google和其他
-    && pip3 install -U pip setuptools wheel \
+#    && pip3 install -U pip setuptools wheel \
     && pip3 install cchardet magic_google jieba pinyin bs4 \
 
     && pip cache purge \
