@@ -1,4 +1,5 @@
-Alpine的致命问题：标准的Linux安装包在Alpine Linux上根本无法使用。
+#Alpine的致命问题：标准的Linux安装包在Alpine Linux上根本无法使用。
+# https://www.cnblogs.com/v3ucn/p/16530696.html
 FROM alpine AS builder
 
 WORKDIR /pagermaid/workdir
