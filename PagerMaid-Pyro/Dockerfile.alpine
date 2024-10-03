@@ -16,7 +16,8 @@ WORKDIR /pagermaid/workdir
 
 COPY --from=builder /pagermaid/workdir /pagermaid/workdir
 
-RUN apk add --no-cache proxychains-ng git bash imagemagick libmagic curl tzdata neofetch libzbar figlet fortune openssl tini \
+RUN apk update \
+    && apk add --no-cache proxychains-ng git bash imagemagick libmagic curl tzdata neofetch libzbar figlet fortune openssl tini \
     && apk add --no-cache --update --virtual .build-deps gcc python3-dev musl-dev linux-headers \
     && git config --global pull.ff only \
     && pip install -r requirements.txt \
