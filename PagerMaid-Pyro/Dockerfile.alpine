@@ -22,7 +22,7 @@ RUN apk add --no-cache proxychains-ng git bash imagemagick libmagic curl tzdata 
     && pip install -r requirements.txt \
 
     ## 修复google和其他
-    && pip install cchardet magic_google jieba pinyin bs4 \
+    && pip3 install cchardet magic_google jieba pinyin bs4 \
 
     && pip cache purge \
     && apk del .build-deps
