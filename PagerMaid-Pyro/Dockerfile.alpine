@@ -2,7 +2,7 @@ FROM alpine AS builder
 
 WORKDIR /pagermaid/workdir
 RUN apk update \
-    && apt add git \
+    && apk add git \
     && git clone -b master https://github.com/TeamPGM/PagerMaid-Pyro.git /pagermaid/workdir
 
 FROM python:alpine
