@@ -11,12 +11,13 @@ WORKDIR /pagermaid/workdir
 
 RUN source ~/.bashrc \
     ## 安装运行环境依赖，自编译建议修改为国内镜像源
-#   && sed -i 's/archive.ubuntu.com/mirrors.bfsu.edu.cn/g' /etc/apt/sources.list \
-#   && sed -i 's/security.ubuntu.com/mirrors.bfsu.edu.cn/g' /etc/apt/sources.list \
-#   && sed -i 's/ports.ubuntu.com/mirrors.bfsu.edu.cn/g' /etc/apt/sources.list \
-    && apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install --no-install-recommends -y \
+    && sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
+    && sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
+    && sed -i 's/ports.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
+
+    && apt update \
+    && apt upgrade -y \
+    && apt install --no-install-recommends -y \
         proxychains4 \
         python3 \
         python3-pip \
@@ -37,6 +38,7 @@ RUN source ~/.bashrc \
         libmagic1 \
         libzbar0 \
         iputils-ping \
+
     ## 安装编译依赖
     && apt-get update \
     && apt-get install --no-install-recommends -y \
@@ -62,14 +64,18 @@ RUN source ~/.bashrc \
         libfribidi-dev \
         libxcb1-dev \
         pkg-config \
+
     ## 设置时区
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
+
     ## python软链接
     && ln -sf /usr/bin/python3 /usr/bin/python \
-    ## 升级pip
-#   && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+
+    ## 升级 pip 到最新的版本后进行配置
     && python -m pip install --upgrade pip \
+    && pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple \
+
     ## 添加用户
     && echo "pagermaid ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/pagermaid \
     && useradd pagermaid -r -m -d /pagermaid -s /bin/bash \
