@@ -5,8 +5,7 @@ RUN apt update \
     && apt install -y git \
     && git clone -b master https://github.com/TeamPGM/PagerMaid-Pyro.git /pagermaid/workdir
 
-# 最终版，使用最新版会出现 Failed to build cchardet 的问题
-FROM python:alpine3.10
+FROM python:alpine
 
 ENV PAGERMAID_DIR=/pagermaid
 ENV TZ=Asia/Shanghai
