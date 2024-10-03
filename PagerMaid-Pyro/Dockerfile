@@ -11,9 +11,9 @@ WORKDIR /pagermaid/workdir
 
 RUN source ~/.bashrc \
     ## 安装运行环境依赖，自编译建议修改为国内镜像源
-    && sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
-    && sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
-    && sed -i 's/ports.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
+#    && sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
+#    && sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
+#    && sed -i 's/ports.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list \
 
     && apt update \
     && apt upgrade -y \
@@ -74,7 +74,7 @@ RUN source ~/.bashrc \
 
     ## 升级 pip 到最新的版本后进行配置
     && python -m pip install --upgrade pip \
-    && pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple \
+#    && pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple \
 
     ## 添加用户
     && echo "pagermaid ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/pagermaid \
@@ -122,4 +122,4 @@ RUN source ~/.bashrc \
         /var/tmp/* \
         ~/.cache
     
-ENTRYPOINT ["sh","utils/docker-config.sh"]
+ENTRYPOINT ["proxychains4", "sh", "utils/docker-config.sh"]
