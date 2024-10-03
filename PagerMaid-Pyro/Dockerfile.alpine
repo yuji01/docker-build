@@ -1,3 +1,4 @@
+Alpine的致命问题：标准的Linux安装包在Alpine Linux上根本无法使用。
 FROM alpine AS builder
 
 WORKDIR /pagermaid/workdir
