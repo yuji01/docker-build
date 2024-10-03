@@ -27,4 +27,6 @@ RUN apk add --no-cache proxychains-ng git bash imagemagick libmagic curl tzdata 
     && pip cache purge \
     && apk del .build-deps
 
-ENTRYPOINT ["tini","--","bash","utils/docker-config.sh"]
+#ENTRYPOINT ["tini","--","bash","utils/docker-config.sh"]
+# 设置入口点
+ENTRYPOINT ["tini", "--", "proxychains4", "bash", "utils/docker-config.sh"]
