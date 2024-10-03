@@ -1,0 +1,30 @@
+FROM ubuntu:latest AS builder
+
+WORKDIR /pagermaid/workdir
+RUN apt update \
+    && apt install -y git \
+    && git clone -b master https://github.com/TeamPGM/PagerMaid-Pyro.git /pagermaid/workdir
+
+# 最终
+FROM python:alpine
+
+ENV PAGERMAID_DIR=/pagermaid
+ENV TZ=Asia/Shanghai
+ENV SHELL=/bin/bash
+
+WORKDIR /pagermaid/workdir
+
+COPY --from=builder /pagermaid/workdir /pagermaid/workdir
+
+RUN apk add --no-cache proxychains-ng git bash imagemagick libmagic curl tzdata neofetch libzbar figlet fortune openssl tini \
+    && apk add --no-cache --update --virtual .build-deps gcc python3-dev musl-dev linux-headers \
+    && git config --global pull.ff only \
+    && pip install -r requirements.txt \
+
+    ## 修复google和其他
+    && pip3 install cchardet magic_google jieba pinyin bs4 \
+
+    && pip cache purge \
+    && apk del .build-deps
+
+ENTRYPOINT ["tini","--","bash","utils/docker-config.sh"]
