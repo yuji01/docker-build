@@ -17,6 +17,7 @@ RUN source ~/.bashrc \
     && apt-get update \
     && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y \
+        proxychains4 \
         python3 \
         python3-pip \
         tesseract-ocr \
