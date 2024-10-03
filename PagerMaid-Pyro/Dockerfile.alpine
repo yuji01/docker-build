@@ -22,6 +22,7 @@ RUN apk update \
     && pip install -r requirements.txt \
 
     ## 修复google和其他
+    && pip3 install -U pip setuptools wheel \
     && pip3 install cchardet magic_google jieba pinyin bs4 \
 
     && pip cache purge \
