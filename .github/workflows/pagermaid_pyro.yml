@@ -50,7 +50,7 @@ jobs:
           #echo "PGM_VERSION=${RAW_PGM_VERSION}" >> "$GITHUB_ENV"
           echo "PGM_VERSION=1.5.0" >> "$GITHUB_ENV"
 
-      - name: Build 
+      - name: Build pagermaid_pyro:me
         run: |
           docker buildx build \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
@@ -58,7 +58,6 @@ jobs:
             --output "type=image,push=true" \
             --platform "linux/amd64,linux/arm64/v8" \
             --build-arg "S6_ARCH=amd64" \
-            --tag "${DOCKERHUB_REPOSITORY}:latest" \
-            --tag "${DOCKERHUB_REPOSITORY}:${PGM_VERSION}" \
-            -f PagerMaid-Pyro/Dockerfile \
+            --tag "${DOCKERHUB_REPOSITORY}:me" \
+            -f PagerMaid-Pyro/Dockerfile.me \
             PagerMaid-Pyro
