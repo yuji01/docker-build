@@ -13,8 +13,8 @@ WORKDIR /pagermaid/workdir
 
 RUN source ~/.bashrc \
     && apt update \
-	## 编译安装python，python依赖
-	&& apt install -y \
+    ## 编译安装python，python依赖
+    && apt install -y \
        proxychains4 \
        sudo \
        git \
@@ -34,19 +34,26 @@ RUN source ~/.bashrc \
 
     # 安装python
     && wget https://www.python.org/ftp/python/${python_version}/Python-${python_version}.tgz -O /tmp/Python-${python_version}.tgz \
+
     # 解压到指定目录
     && tar -xf /tmp/Python-${python_version}.tgz -C /tmp \
+
     # --enable-optimizations 参数会启用优化选项，尽管编译时间会更长，但生成的 Python 会更加高效。
-    && cd /tmp/Python-${python_version} && ./configure --enable-optimizations \
+    && cd /tmp/Python-${python_version} \
+    && ./configure --enable-optimizations \
+
     # 编译
     && make -j $(nproc) && echo "编译成功" || echo "编译失败" \
+
     # 安装
     # 使用标准的 make install，它将覆盖默认的系统 python3 二进制文件
     && make altinstall && echo "安装成功" || echo "安装失败" \
+    
     # 创建 Python3 的符号链接
     && py_version=$(echo $python_version | cut -d . -f1,2) \
     && ln -s /usr/local/bin/python${py_version} /usr/bin/python3 \
     && ln -s /usr/local/bin/python${py_version} /usr/bin/python \
+    
     # 安装pip
     && wget https://bootstrap.pypa.io/get-pip.py \
     && python3 get-pip.py \
