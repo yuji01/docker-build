@@ -10,17 +10,18 @@ services:
         container_name: pagermaid
         hostname: pagermaid
         ports:                                 # 是否开启网页控制面板
-            - "3333:3333"
+            - "800:80"
         volumes:
             - './data:/pagermaid/workdir/data'
+            - './plugins:/pagermaid/workdir/plugins'
             - './proxychains.conf:/etc/proxychains4.conf:ro'
         environment:
             - WEB_ENABLE=true
-            - WEB_SECRET_KEY=password
+            - WEB_SECRET_KEY=passwd
             - WEB_HOST=0.0.0.0
-            - WEB_PORT=3333
+            - WEB_PORT=80
 ```
 
 ```shell
-docker-compose run --rm -it -p 3333:3333 pagermaid
+docker-compose run --rm -it -p 800:80 pagermaid
 ```
