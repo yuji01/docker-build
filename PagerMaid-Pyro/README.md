@@ -20,3 +20,7 @@ services:
             - WEB_HOST=0.0.0.0
             - WEB_PORT=3333
 ```
+
+```shell
+docker-compose run --rm -it -p 3333:3333 pagermaid
+```
