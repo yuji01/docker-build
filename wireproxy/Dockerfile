@@ -8,7 +8,8 @@ WORKDIR /usr/src/wireproxy
 RUN make
 
 # Now copy it into our base image.
-FROM gcr.io/distroless/static-debian11:nonroot
+#FROM gcr.io/distroless/static-debian11:nonroot
+FROM alpine
 
 COPY --from=build /usr/src/wireproxy/wireproxy /usr/bin/wireproxy
 
