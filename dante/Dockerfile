@@ -1,35 +1,34 @@
-FROM alpine:latest
+FROM    alpine:latest
 
-# 设置环境变量
-ENV DANTE_VER=1.4.3
-ENV DANTE_URL=https://www.inet.no/dante/files/dante-$DANTE_VER.tar.gz
+ENV     DANTE_VER 1.4.2
 
-RUN apk add --no-cache --virtual .build-deps \
-        build-base \
-        curl \
-        linux-pam-dev && \
-        install -v -d /tmp && \
-        curl -sSL $DANTE_URL -o /tmp/dante.tar.gz && \
-        tar -C /tmp -vxzf /tmp/dante.tar.gz && \
-        cd /tmp/dante-$DANTE_VER && \
+ENV     DANTE_URL https://www.inet.no/dante/files/dante-$DANTE_VER.tar.gz
+
+ENV     DANTE_SHA 4c97cff23e5c9b00ca1ec8a95ab22972813921d7fbf60fc453e3e06382fc38a7
+
+RUN     apk add --no-cache --virtual .build-deps \
+            build-base \
+            curl \
+            linux-pam-dev && \
+        install -v -d /src && \
+        curl -sSL $DANTE_URL -o /src/dante.tar.gz && \
+        echo "$DANTE_SHA */src/dante.tar.gz" | sha256sum -c && \
+        tar -C /src -vxzf /src/dante.tar.gz && \
+        cd /src/dante-$DANTE_VER && \
         # https://lists.alpinelinux.org/alpine-devel/3932.html
-        ac_cv_func_sched_setscheduler=no ./configure --build=x86_64-unknown-linux-gnu && \
+        ac_cv_func_sched_setscheduler=no ./configure && \
         make -j install && \
-        cd / && rm -r /tmp && \
+        cd / && rm -r /src && \
         apk del .build-deps && \
         apk add --no-cache \
             linux-pam
         
-COPY sockd.conf /etc/
+COPY    sockd.conf /etc/
 
-WORKDIR /app
+COPY    docker-entrypoint.sh /
 
-COPY docker-entrypoint.sh /app
+EXPOSE  1080
 
-RUN chmod +x /app/docker-entrypoint.sh
+ENTRYPOINT  ["/docker-entrypoint.sh"]
 
-EXPOSE 1080
-
-ENTRYPOINT ["sh", "-c", "/app/docker-entrypoint.sh"]
-
-CMD ["sockd"]
+CMD     ["sockd"]
