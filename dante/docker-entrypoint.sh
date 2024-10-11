@@ -9,7 +9,7 @@ echo $1 | grep -q ^sockd- || exec "$@"
 case $1 in
     'sockd-username')
         if [ -z "${SOCKD_USER_PASSWORD}" ]; then
-            echo "Set \$SOCKD_USER_PASSWORD variable please"
+            echo "请设置 \$SOCKD_USER_PASSWORD 变量"
             exit 1
         fi
 
