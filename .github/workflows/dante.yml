@@ -1,0 +1,44 @@
+name: "Docker Build dante"
+
+on:
+  workflow_dispatch: # 手动运行
+#  push: # 推送
+#    branches: [ "main" ]
+
+#  pull_request: # 拉取
+#    branches: [ "main" ]
+    
+#  watch: # 手动点击收藏
+#    types: [started]
+jobs:
+  build_image:
+    runs-on: ubuntu-latest # 申请一个ubuntu的虚拟机
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/dante
+
+    steps:
+      - name: Checkout Code # 获取代码
+        uses: actions/checkout@v4 # 官方的action，获取代码
+
+      - name: Log in to Docker Hub # 登录docker hub
+        uses: docker/login-action@v3  # 三方的action操作， 执行docker login
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }} 
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image # 构建且推送docker镜像
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            -t ${DOCKERHUB_REPOSITORY} \
+            -f dante/Dockerfile \
+            --push \
+            rclone
