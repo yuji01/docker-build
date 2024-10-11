@@ -1,41 +1,31 @@
-FROM alpine
+FROM alpine:latest
 
-# TODO: Various optional modules are currently disabled (see output of ./configure):
-# - Libwrap is disabled because tcpd.h is missing.
-# - BSD Auth is disabled because bsd_auth.h is missing.
-# - ...
+# 设置环境变量
+ENV DANTE_VER=1.4.3 \
+    DANTE_URL https://www.inet.no/dante/files/dante-$DANTE_VER.tar.gz
 
-RUN set -x \
-    # Runtime dependencies.
- && apk add --no-cache \
-        linux-pam \
-    # Build dependencies.
- && apk add --no-cache -t .build-deps \
+RUN apk add --no-cache --virtual .build-deps \
         build-base \
         curl \
-        linux-pam-dev \
- && cd /tmp \
-    # https://www.inet.no/dante/download.html
- && curl -L https://www.inet.no/dante/files/dante-1.4.3.tar.gz | tar xz \
- && cd dante-* \
-    # See https://lists.alpinelinux.org/alpine-devel/3932.html
- && ac_cv_func_sched_setscheduler=no ./configure \
- && make install \
- && cd / \
-    # Add an unprivileged user.
- && adduser -S -D -u 8062 -H sockd \
-    # Install dumb-init (avoid PID 1 issues).
-    # https://github.com/Yelp/dumb-init 
- && curl -Lo /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64 \
- && chmod +x /usr/local/bin/dumb-init \
-    # Clean up.
- && rm -rf /tmp/* \
- && apk del --purge .build-deps
-
-# Default configuration
+        linux-pam-dev && \
+        install -v -d /tmp && \
+        curl -sSL $DANTE_URL -o /tmp/dante.tar.gz && \
+        tar -C /tmp -vxzf /tmp/dante.tar.gz && \
+        cd /tmp/dante-$DANTE_VER && \
+        # https://lists.alpinelinux.org/alpine-devel/3932.html
+        ac_cv_func_sched_setscheduler=no ./configure && \
+        make -j install && \
+        cd / && rm -r /tmp && \
+        apk del .build-deps && \
+        apk add --no-cache \
+            linux-pam
+        
 COPY sockd.conf /etc/
+
+COPY docker-entrypoint.sh /
 
 EXPOSE 1080
 
-ENTRYPOINT ["dumb-init"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
 CMD ["sockd"]
