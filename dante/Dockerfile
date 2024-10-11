@@ -22,13 +22,16 @@ RUN     apk add --no-cache --virtual .build-deps \
         apk del .build-deps && \
         apk add --no-cache \
             linux-pam
-        
+
+WORKDIR /app
+
 COPY    sockd.conf /etc/
 
-COPY    docker-entrypoint.sh /
+COPY    docker-entrypoint.sh /app
+RUN chmod +x /app/docker-entrypoint.sh
 
 EXPOSE  1080
 
-ENTRYPOINT  ["/docker-entrypoint.sh"]
+ENTRYPOINT  ["./docker-entrypoint.sh"]
 
 CMD     ["sockd"]
