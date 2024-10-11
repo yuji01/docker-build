@@ -1,8 +1,8 @@
 FROM alpine:latest
 
 # 设置环境变量
-ENV DANTE_VER=1.4.3 \
-    DANTE_URL=https://www.inet.no/dante/files/dante-$DANTE_VER.tar.gz
+ENV DANTE_VER 1.4.3
+ENV DANTE_URL https://www.inet.no/dante/files/dante-$DANTE_VER.tar.gz
 
 RUN apk add --no-cache --virtual .build-deps \
         build-base \
