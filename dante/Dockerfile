@@ -26,6 +26,6 @@ COPY docker-entrypoint.sh /
 
 EXPOSE 1080
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["sh", "-c", "/docker-entrypoint.sh"]
 
 CMD ["sockd"]
