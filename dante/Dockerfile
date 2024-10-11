@@ -22,10 +22,14 @@ RUN apk add --no-cache --virtual .build-deps \
         
 COPY sockd.conf /etc/
 
-COPY docker-entrypoint.sh /
+WORKDIR /app
+
+COPY docker-entrypoint.sh /app
+
+RUN chmod +x /app/docker-entrypoint.sh
 
 EXPOSE 1080
 
-ENTRYPOINT ["sh", "-c", "/docker-entrypoint.sh"]
+ENTRYPOINT ["sh", "-c", "/app/docker-entrypoint.sh"]
 
 CMD ["sockd"]
