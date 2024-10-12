@@ -6,6 +6,9 @@ RUN apk add --no-cache git make build-base && \
     make
 
 FROM alpine:latest
+# 添加 /app 到环境变量
+ENV PATH="/app:${PATH}"
+
 WORKDIR /app
 COPY --from=builder /root/vlmcsd/bin/vlmcs /app/vlmcs
 COPY --from=builder /root/vlmcsd/bin/vlmcsd /app/vlmcsd
