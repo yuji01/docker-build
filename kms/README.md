@@ -1,8 +1,9 @@
 ```sh
-docker run --name kms --restart always -p 1688:1688 yujibuzailai/kms
+docker run -d --name kms --restart always -p 1688:1688 yujibuzailai/kms
 ```
-- 查询kms
+
+- 查询 kms 是否运行
 
 ```sh
-docker run --rm  yujibuzailai/kms vlmcs kms.narutos.top:1688
+docker run --rm --network host yujibuzailai/kms vlmcs kms.narutos.top:1688
 ```
