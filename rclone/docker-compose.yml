@@ -1,0 +1,17 @@
+services:
+    rclone:
+        image: yujibuzailai/rclone
+        container_name: rclone
+        cap_add: # 为容器添加 SYS_ADMIN 权限，这在 Linux 上允许更高的系统权限，是为了能够挂载文件系统所必需的。
+            - SYS_ADMIN
+        devices:
+            - /dev/fuse # 使用 /dev/fuse 设备。
+        security_opt:
+            - apparmor:unconfined # 解除 AppArmor 安全限制
+        user: 0:0
+        environment:
+            "URL": "" # 配置文件下载直链
+        volumes:
+            - '/dev/fuse:/dev/fuse' # 使得容器能够通过 FUSE (Filesystem in Userspace) 实现文件系统挂载。
+            - '/opt/mydocker/run/immich/google:/mnt:shared'
+        command: 'rclone mount xxx:/docker/immich /mnt --allow-other --allow-non-empty --vfs-cache-mode full --cache-dir /tmp --no-check-certificate'
