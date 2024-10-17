@@ -16,6 +16,7 @@ services:
         user: 0:0
         environment:
             "URL": "" # 配置文件下载地址
+            "REMOTE": "" # 远程挂载路径
         volumes:
             #- '/opt/mydocker/run/rclone/start.sh:/app/start.sh'
             - '/dev/fuse:/dev/fuse' # 使得容器能够通过 FUSE (Filesystem in Userspace) 实现文件系统挂载。
