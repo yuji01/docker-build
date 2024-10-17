@@ -11,7 +11,13 @@ services:
         user: 0:0
         environment:
             "URL": "" # 配置文件下载直链
+            "REMOTE": "" # 远程挂载路径
         volumes:
             - '/dev/fuse:/dev/fuse' # 使得容器能够通过 FUSE (Filesystem in Userspace) 实现文件系统挂载。
             - '/opt/mydocker/run/immich/google:/mnt:shared'
-        command: 'rclone mount xxx:/docker/immich /mnt --allow-other --allow-non-empty --vfs-cache-mode full --cache-dir /tmp --no-check-certificate'
+        #command: 'rclone mount xxx:/docker/immich /mnt --allow-other --allow-non-empty --vfs-cache-mode full --cache-dir /tmp --no-check-certificate'
+        healthcheck:
+            test: ["CMD-SHELL", "test -n \"$(ls -A /mnt)\" || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"]
+            interval: 3s
+            timeout: 10s
+            retries: 3
