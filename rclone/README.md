@@ -21,7 +21,7 @@ services:
             - '/dev/fuse:/dev/fuse' # 使得容器能够通过 FUSE (Filesystem in Userspace) 实现文件系统挂载。
             
             - '/opt/mydocker/run/immich/upload_storage:/mnt:shared' # 后面的 /mnt 不要改
-        command: 'rclone mount 网盘:/docker/immich/upload_storage /mnt --allow-other --allow-non-empty --vfs-cache-mode writes --cache-dir /tmp --vfs-cache-max-age 1h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 64M --no-check-certificate'
+        #command: 'rclone mount 网盘:/docker/immich/upload_storage /mnt --allow-other --allow-non-empty --vfs-cache-mode writes --cache-dir /tmp --vfs-cache-max-age 1h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 2G --buffer-size 64M --no-check-certificate'
         
         healthcheck: # 设置健康检测规则，如果/mnt 目录没有文件，则执行 bash -c 来发送 SIGTERM 和 SIGKILL 以终止进程
             test: ["CMD-SHELL", "test -n \"$(ls -A /mnt)\" || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"] 
