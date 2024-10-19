@@ -6,7 +6,7 @@ wget --no-check-certificate "$URL" -O /root/.config/rclone/rclone.conf &&
 mkdir -p /rclone-mount
 
 # rclone 挂载，以后台运行
-rclone mount $REMOTE /rclone-mount
+nohup rclone mount $REMOTE /rclone-mount \
   --allow-non-empty \
   --allow-other \
   --buffer-size 64M \
@@ -14,8 +14,7 @@ rclone mount $REMOTE /rclone-mount
   --vfs-cache-mode writes \
   --vfs-cache-max-size 1G \
   --vfs-read-chunk-size 5M \
-  --transfers 8 \
-  --log-level INFO &
+  --transfers 8 > rclone.log 2>&1 &
 
 if [ $? -eq 0 ];then
 
