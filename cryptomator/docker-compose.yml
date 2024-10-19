@@ -1,0 +1,21 @@
+services:
+    app:
+        image: yujibuzailai/cryptomator
+        container_name: cryptomator
+        cap_add:
+            - SYS_ADMIN
+        devices:
+            - /dev/fuse
+        security_opt:
+            - apparmor:unconfined
+        user: 0:0
+        environment:
+            "VAULT_NAME": ""
+            "VAULT_PASS": ""
+            "URL": "" # 配置文件下载直链
+            "REMOTE": "" # rclone远程挂载路径
+        volumes:
+            - '/dev/fuse:/dev/fuse'
+            - './:/mnt:shared' # 加密文件解密路径
+#        ports:
+#            - '5005:5005' # webdav 地址
