@@ -19,6 +19,9 @@ nohup rclone mount $REMOTE /rclone-mount \
   --vfs-read-chunk-size 5M \
   --transfers 8 &
 
+# 捕捉 SIGTERM 信号
+trap "fusermount -u /rclone-mount/" SIGTERM
+
 sleep 3
 
 # 运行解密程序，解密后的文件挂载到 /mnt
