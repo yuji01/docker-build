@@ -19,7 +19,7 @@ FROM openjdk:17-slim # 最终构建
 
 
 ENV VAULT_NAME demoVault
-ENV VAULT_PATH /cryptomatorDir
+ENV VAULT_PATH /rclone-mount
 ENV VAULT_PASS password
 ENV VAULT_BIND 0.0.0.0
 ENV CRYPTOMATOR_PORT 5005
