@@ -36,9 +36,9 @@ COPY start.sh /app/start.sh
 WORKDIR /app
 
 
-# change permission
 RUN apt update \
 && apt install -y wget fuse \
+&& ln -s $(which fusermount) /usr/bin/fusermount3 \
 && chmod +x /usr/local/bin/rclone \
 && chmod +x /app/start.sh
 
