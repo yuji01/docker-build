@@ -38,7 +38,9 @@ WORKDIR /app
 
 # change permission
 RUN apt update \
-&& apt install -y wget fuse && chmod +x /app/start.sh
+&& apt install -y wget fuse nohup \
+&& chmod +x /usr/local/bin/rclone \
+&& chmod +x /app/start.sh
 
 # run at startup
 CMD /app/start.sh
