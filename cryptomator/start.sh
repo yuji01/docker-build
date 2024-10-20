@@ -26,10 +26,17 @@ rclone --config /app/rclone.conf mount $REMOTE /rclone-mount \
   --fast-list \
   --log-level INFO > /proc/1/fd/1 2>&1 &
 
-# 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
-trap "umount -u /rclone-mount" SIGTERM
-
 sleep 3
+
+# 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
+function cleanup {
+  echo "Unmounting /rclone-mount..."
+  fusermount -u /rclone-mount
+  echo "/rclone-mount unmounted"
+}
+
+trap cleanup SIGTERM SIGINT
+
 
 # 运行解密程序 Cryptomator，将输出也重定向到 stdout
 java -jar /usr/bin/cryptomator.jar \
