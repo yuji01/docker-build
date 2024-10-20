@@ -1,12 +1,11 @@
 #!/bin/bash
 
 # 创建 rclone 配置目录并下载配置文件
-mkdir -p /root/.config/rclone/ &&
-wget --no-check-certificate "$URL" -O /root/.config/rclone/rclone.conf &&
+wget --no-check-certificate "$URL" -O /app/rclone.conf &&
 
 # 显示 rclone 配置文件内容到日志
-cat /root/.config/rclone/rclone.conf
-cp /root/.config/rclone/rclone.conf /app/rclone.conf
+cat /app/rclone.conf
+
 # 创建 rclone 挂载点
 mkdir -p /rclone-mount
 
