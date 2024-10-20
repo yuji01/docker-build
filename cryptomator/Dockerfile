@@ -43,4 +43,5 @@ RUN apt update \
 && chmod +x /app/start.sh
 
 # run at startup
-CMD /app/start.sh
+ENTRYPOINT [ "/app/start.sh" ]
+#CMD /app/start.sh
