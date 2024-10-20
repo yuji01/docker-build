@@ -19,7 +19,8 @@ rclone mount $REMOTE /rclone-mount \
   --vfs-cache-mode writes \
   --vfs-cache-max-size 1G \
   --vfs-read-chunk-size 5M \
-  --transfers 8 > /proc/1/fd/1 2>&1 &
+  --transfers 8 \
+  --log-level INFO > /proc/1/fd/1 2>&1 &
 
 # 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
 trap "fusermount -u /rclone-mount" SIGTERM
@@ -30,7 +31,7 @@ sleep 3
 java -jar /usr/bin/cryptomator.jar \
     --vault $VAULT_NAME=$VAULT_PATH --password $VAULT_NAME=$VAULT_PASS \
     --bind $VAULT_BIND --port $CRYPTOMATOR_PORT \
-    --fusemount $VAULT_NAME=$VAULT_MOUNT > /proc/1/fd/1 2>&1
+    --fusemount $VAULT_NAME=$VAULT_MOUNT > /proc/1/fd/1 2>&1 &
 
 # 持续运行以保持容器活动
 wait
