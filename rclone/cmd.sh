@@ -1,4 +1,5 @@
 #! /bin/bash
+
 # 启动 rclone，并将输出重定向到 stdout
 rclone --config /app/rclone.conf mount $REMOTE /mnt \
   --allow-non-empty \
