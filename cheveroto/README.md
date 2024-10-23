@@ -30,3 +30,14 @@ networks:
     chevereto:
         driver: bridge
 ```
+
+## 提取html到本地
+```bash
+container_id=$(docker create yujibuzailai/chevereto:china)
+docker cp $container_id:/var/www/html/. ./html/
+docker rm $container_id
+```
+## 授权
+```bash
+chown www-data:www-data html -R
+```
