@@ -11,7 +11,8 @@ RUN apk --no-cache add bash wget curl unzip\
     && cp rclone-${version}-linux-${OS_type}/rclone /usr/local/bin/rclone
 
 # 最终构建
-FROM alpine:latest 
+FROM alpine:latest
+RUN adduser -u 33 -Ds /bin/sh -G www-data www-data
 USER www-data
 
 WORKDIR /app
