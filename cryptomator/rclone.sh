@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
+trap "fusermount -u /rclone-mount; exit" SIGTERM
+
 # 创建 rclone 配置目录并下载配置文件
 wget --no-check-certificate "$URL" -O /app/rclone.conf &&
 
@@ -23,10 +26,4 @@ rclone --config /app/rclone.conf mount $REMOTE /rclone-mount \
   --transfers 16 \
   --dir-cache-time 72h \
   --fast-list \
-  --log-level INFO > /proc/1/fd/1 2>&1 &
-
-# 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
-trap "fusermount -u /rclone-mount" SIGTERM
-
-# 持续运行以保持容器活动
-wait
+  --log-level INFO > /proc/1/fd/1 2>&1
