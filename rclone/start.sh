@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 # 创建 rclone 配置目录并下载配置文件
 wget --no-check-certificate "$URL" -O /app/rclone.conf &&
