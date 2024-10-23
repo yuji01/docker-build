@@ -1,3 +1,12 @@
+FROM alpine:latest AS builder
+
+RUN apk --no-cache add bash wget curl unzip\
+    # 下载文件
+    && wget https://pan.narutos.top/d/%E5%88%86%E4%BA%AB/share/Linux/chevereto/cheveretoChinaV4.zip -O /tmp/cheveretoChinaV4.zip \
+    # 解压文件
+    && unzip -q /tmp/cheveretoChinaV4.zip -d /tmp/html
+
+
 # 使用官方 PHP 8.0 FPM 镜像作为基础镜像
 # 建议8.0！
 FROM php:8.0-fpm
@@ -33,6 +42,8 @@ COPY cheveroto_cron_job /etc/cron.d/chevereto
 RUN crontab /etc/cron.d/chevereto \
     && touch /var/log/cron.log
 
+# 复制 开心版文件
+COPY --from=builder /tmp/html /var/www/html
 
 # 清理无用的缓存文件
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
