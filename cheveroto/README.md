@@ -9,7 +9,7 @@ chevereto 0.4.7
 ```yaml
 name: chevereto
 services:
-    php-fpm:
+    php-fpm: # 这个名字不要改
         image: yujibuzailai/chevereto:china
         volumes:
             - './html:/var/www/html'
