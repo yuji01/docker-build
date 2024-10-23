@@ -31,17 +31,25 @@ EXPOSE 5005
 
 COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
 COPY --from=builder /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar
-COPY start.sh /app/start.sh
 
 WORKDIR /app
 
+COPY start.sh /app/start.sh
+COPY rclone.sh /app/rclone.sh
+COPY cryptomator.sh /app/cryptomator.sh
 
 RUN apt update \
-&& apt install -y wget fuse \
+&& apt install -y wget fuse supervisor \
 && ln -s $(which fusermount) /usr/bin/fusermount3 \
+&& mkdir -p /etc/supervisor/conf.d \
 && chmod +x /usr/local/bin/rclone \
-&& chmod +x /app/start.sh
+&& chmod +x /app/start.sh \
+&& chmod +x /app/rclone.sh \
+&& chmod +x /app/cryptomator.sh
+
+COPY supervisord.conf /etc/supervisor/conf.d/
 
 # run at startup
-ENTRYPOINT [ "/app/start.sh" ]
+#ENTRYPOINT [ "/app/start.sh" ]
+CMD ["/usr/bin/supervisord"]
 #CMD /app/start.sh
