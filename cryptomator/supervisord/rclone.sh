@@ -1,5 +1,5 @@
 #!/bin/bash
-
+sleep 3
 # 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
 trap "fusermount -u /rclone-mount; exit" SIGTERM
 
