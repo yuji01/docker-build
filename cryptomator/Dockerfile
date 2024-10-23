@@ -34,20 +34,17 @@ COPY --from=builder /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar
 
 WORKDIR /app
 
-COPY start.sh /app/start.sh
-COPY rclone.sh /app/rclone.sh
-COPY cryptomator.sh /app/cryptomator.sh
+# COPY start.sh /app/start.sh
+COPY supervisord/*.sh /app/
 
 RUN apt update \
 && apt install -y wget fuse supervisor \
 && ln -s $(which fusermount) /usr/bin/fusermount3 \
 && mkdir -p /etc/supervisor/conf.d \
 && chmod +x /usr/local/bin/rclone \
-&& chmod +x /app/start.sh \
-&& chmod +x /app/rclone.sh \
-&& chmod +x /app/cryptomator.sh
+&& chmod +x /app/*.sh
 
-COPY supervisord.conf /etc/supervisor/conf.d/
+COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
 # run at startup
 #ENTRYPOINT [ "/app/start.sh" ]
