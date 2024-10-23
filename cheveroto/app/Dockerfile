@@ -37,13 +37,14 @@ RUN docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
 # 复制自定义 php.ini
 COPY php.ini /usr/local/etc/php/php.ini
 
+# 复制 开心版 文件，授予权限
+COPY --from=builder /tmp/html /var/www/html
+RUN chown www-data:www-data /var/www/html -R
+
 # 复制 cron 任务
 COPY cheveroto_cron_job /etc/cron.d/chevereto
 RUN crontab /etc/cron.d/chevereto \
     && touch /var/log/cron.log
-
-# 复制 开心版文件
-COPY --from=builder /tmp/html /var/www/html
 
 # 清理无用的缓存文件
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
