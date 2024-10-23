@@ -49,6 +49,8 @@ RUN crontab /etc/cron.d/chevereto \
 # 清理无用的缓存文件
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# 声明 volume ，不声明会导致主机空文件覆盖容器文件
+VOLUME /var/www/html
 
 # 启动 cron 服务
 CMD cron && php-fpm
