@@ -53,7 +53,8 @@ RUN chown -R www-data:www-data \
     /var/www/html \
     /etc/cron.d/ \
     /usr/local/ \
-    /var/log/
+    /var/log/ \
+    /var/run/
 
 # 声明 volume 
 VOLUME /var/www/html
