@@ -1,7 +1,16 @@
 #!/bin/bash
 sleep 3
-# 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
-trap "fusermount -u /rclone-mount; exit" SIGTERM
+
+# 清理逻辑
+cleanup() {
+    echo "Unmounting /rclone-mount..."
+    fusermount -u /rclone-mount
+    echo "Unmounted /rclone-mount"
+    exit 0
+}
+
+# 捕获 SIGTERM 信号
+trap cleanup SIGTERM
 
 # 启动 rclone，并将输出重定向到 stdout
 rclone --config /app/rclone.conf mount $REMOTE /rclone-mount \
@@ -17,4 +26,4 @@ rclone --config /app/rclone.conf mount $REMOTE /rclone-mount \
   --transfers 16 \
   --dir-cache-time 72h \
   --fast-list \
-  --log-level INFO > /proc/1/fd/1 2>&1
+  --log-level INFO > /proc/1/fd/1 2>&1 
