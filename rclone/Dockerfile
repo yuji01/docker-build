@@ -36,5 +36,5 @@ RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
 RUN addgroup -g 1009 rclone && adduser -u 1009 -Ds /bin/sh -G rclone rclone
 
 ENTRYPOINT [ "/app/start.sh" ]
-CMD [ "sh", "-c", "/app/cmd.sh" ]
+CMD [ "/app/cmd.sh" ]
 #CMD ["sh", "-c", "rclone --config /app/rclone.conf mount $REMOTE /mnt --allow-non-empty --allow-other --buffer-size 256M --cache-dir /cache --vfs-cache-mode writes --vfs-cache-max-size 2G --vfs-read-chunk-size 64M --transfers 16 --log-level INFO"]
