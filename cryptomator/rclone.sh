@@ -23,4 +23,10 @@ rclone --config /app/rclone.conf mount $REMOTE /rclone-mount \
   --transfers 16 \
   --dir-cache-time 72h \
   --fast-list \
-  --log-level INFO
+  --log-level INFO > /proc/1/fd/1 2>&1 &
+
+# 捕捉 SIGTERM 信号，确保在容器关闭时卸载挂载点
+trap "fusermount -u /rclone-mount" SIGTERM
+
+# 持续运行以保持容器活动
+wait
