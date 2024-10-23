@@ -11,12 +11,18 @@ name: chevereto
 services:
     php-fpm: # 这个名字不要改
         image: yujibuzailai/chevereto:china
+        restart: always
+        container_name: chevereto-php-fpm
+        env_file:
+            - .env # 引用环境变量文件
         volumes:
             - './html:/var/www/html'
         networks:
             - chevereto
     web:
         image: yujibuzailai/chevereto:web
+        restart: always
+        container_name: chevereto-web
         networks:
             - chevereto
         ports:
