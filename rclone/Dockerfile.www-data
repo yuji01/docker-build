@@ -36,9 +36,12 @@ RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
 # 授权
 RUN chown www-data:www-data /app -R \
     && mkdir -p /cache \
-    && chown www-data:www-data /mnt /cache
+    && chown www-data:www-data /mnt -R \
+    && chown www-data:www-data /cache -R
 
 USER www-data
+VOLUNE /mnt
+VOLUME /cache
 
 ENTRYPOINT [ "/app/start.sh" ]
 CMD [ "/app/cmd.sh" ]
