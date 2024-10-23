@@ -12,8 +12,6 @@ RUN apk --no-cache add bash wget curl unzip\
 
 # 最终构建
 FROM alpine:latest
-RUN adduser -u 33 -Ds /bin/sh -G www-data www-data
-USER www-data
 
 WORKDIR /app
 
@@ -28,11 +26,14 @@ RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
     # 配置权限
-    && chmod +x /usr/local/bin/rclone \
-    && chmod +x /app/start.sh \
-    && chmod +x /app/cmd.sh \
+    && chmod a+x /usr/local/bin/rclone \
+    && chmod a+x /app/start.sh \
+    && chmod a+x /app/cmd.sh \
     # 删除缓存
     && rm -rf /var/cache/apk/*
+
+RUN adduser -u 33 -Ds /bin/sh -G www-data www-data
+USER www-data
 
 ENTRYPOINT [ "/app/start.sh" ]
 CMD [ "/app/cmd.sh" ]
