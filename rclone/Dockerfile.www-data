@@ -12,6 +12,7 @@ RUN apk --no-cache add bash wget curl unzip\
 
 # 最终构建
 FROM alpine:latest 
+USER www-data
 
 WORKDIR /app
 
@@ -31,10 +32,6 @@ RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
     && chmod +x /app/cmd.sh \
     # 删除缓存
     && rm -rf /var/cache/apk/*
-
-# 创建用户和用户组
-RUN addgroup -g 33 www-data && adduser -u 33 -Ds /bin/sh -G www-data www-data
-USER www-data
 
 ENTRYPOINT [ "/app/start.sh" ]
 CMD [ "/app/cmd.sh" ]
