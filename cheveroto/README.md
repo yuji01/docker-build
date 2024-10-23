@@ -1,5 +1,5 @@
 # cheveretoChinaV4 版本docker部署
-chevereto 0.4.7
+chevereto 4.0.7
 
 > 镜像说明：
 >
