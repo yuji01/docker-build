@@ -40,7 +40,7 @@ RUN chown www-data:www-data /app -R \
     && chown www-data:www-data /cache -R
 
 USER www-data
-VOLUNE /mnt
+VOLUME /mnt
 VOLUME /cache
 
 ENTRYPOINT [ "/app/start.sh" ]
