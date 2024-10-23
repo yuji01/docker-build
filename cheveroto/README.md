@@ -1,5 +1,5 @@
-# chevereto 开心版 docker 部署
-**chevereto 0.4.7**
+# cheveretoChinaV4 版本docker部署
+chevereto 0.4.7
 
 > 镜像说明：
 >
@@ -54,6 +54,28 @@ docker rm $container_id
 
 ```bash
 chown www-data:www-data html -R
+```
+
+4. 编辑 `.env` 文件
+- 没有配置过数据库，或者重新弄
+
+```
+CHEVERETO_HOSTNAME=img2.narutos.top # 要监听的路径，需要能直接访问
+CHEVERETO_HTTPS=1 # 启用https填1，不启用填0
+```
+
+- 已经配置过数据库
+
+```
+CHEVERETO_DB_HOST=100.100.100.100
+CHEVERETO_DB_NAME=cheveretochina
+CHEVERETO_DB_PASS=62Nk4diri3rPkiY84ffDEaAN2hAp7cWC
+CHEVERETO_DB_PORT=3306
+CHEVERETO_DB_USER=cheveretochina
+CHEVERETO_DB_TABLE_PREFIX=chv_
+CHEVERETO_ENCRYPTION_KEY=4gHRSO20yIW3vTkn4slc46mhXVeRsxSIIBI0vLZ6/eo=
+CHEVERETO_HOSTNAME=img2.narutos.top
+CHEVERETO_HTTPS=1
 ```
 
 4. 启动容器
