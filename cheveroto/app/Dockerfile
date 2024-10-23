@@ -37,9 +37,8 @@ RUN docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
 # 复制自定义 php.ini
 COPY php.ini /usr/local/etc/php/php.ini
 
-# 复制 开心版 文件，授予权限
+# 复制 开心版 文件
 COPY --from=builder /tmp/html /var/www/html
-RUN chown www-data:www-data /var/www/html -R
 
 # 复制 cron 任务
 COPY cheveroto_cron_job /etc/cron.d/chevereto
@@ -49,8 +48,18 @@ RUN crontab /etc/cron.d/chevereto \
 # 清理无用的缓存文件
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 声明 volume ，不声明会导致主机空文件覆盖容器文件
+# 授权
+RUN chown -R www-data:www-data \
+    /var/www/html \
+    /etc/cron.d/ \
+    /usr/local/ \
+    /var/log/
+
+# 声明 volume 
 VOLUME /var/www/html
+
+# 切换到 www-data 用户
+USER www-data
 
 # 启动 cron 服务
 CMD cron && php-fpm
