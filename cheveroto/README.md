@@ -83,4 +83,10 @@ CHEVERETO_HTTPS=1
 ```bash
 docker compose up -d
 ```
+## 查看环境变量
 
+```sh
+cat html/app/env.php
+```
+
+- 可以将这部分记录下来，以后迁移就方便了
