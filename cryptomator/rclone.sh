@@ -23,4 +23,4 @@ rclone --config /app/rclone.conf mount $REMOTE /rclone-mount \
   --transfers 16 \
   --dir-cache-time 72h \
   --fast-list \
-  --log-level INFO > /proc/1/fd/1 2>&1
+  --log-level INFO
