@@ -42,3 +42,12 @@ jobs:
             -f rclone/Dockerfile \
             --push \
             rclone
+
+      - name: Build image www-data # 构建且推送docker镜像
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -t ${DOCKERHUB_REPOSITORY} \
+            -f rclone/Dockerfile.www-data \
+            --push \
+            rclone
