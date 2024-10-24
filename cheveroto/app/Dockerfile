@@ -13,7 +13,7 @@ FROM php:8.0-fpm
 
 # 安装必要的依赖库
 # cron 和 sudo 都是必须的
-RUN apt-get update && apt-get install -y cron sudo supervisor \
+RUN apt-get update && apt-get install -y cron sudo supervisor nginx \
     libmagickwand-dev \
     libexif-dev \
     libjpeg-dev \
@@ -37,6 +37,9 @@ RUN docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
 # 复制自定义 php.ini
 COPY php.ini /usr/local/etc/php/php.ini
 
+# 复制nginx配置文件
+COPY nginx/*.conf /etc/nginx/
+
 # 复制 开心版 文件
 COPY --from=builder /tmp/html /var/www/html
 
@@ -52,6 +55,7 @@ COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
 # 授权
 RUN chown -R www-data:www-data \
+    /etc/nginx \
     /etc/supervisor/ \
     /var/www/html \
     /etc/cron.d/ \
