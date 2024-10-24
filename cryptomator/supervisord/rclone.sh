@@ -25,7 +25,8 @@ cleanup() {
 trap cleanup SIGTERM
 
 # 启动 rclone，并将输出重定向到 stdout
-rclone --config /app/rclone.conf mount $REMOTE /rclone-mount \
+rclone --config /app/rclone.conf \
+  --umask=0 mount $REMOTE /rclone-mount \
   --allow-non-empty \
   --allow-other \
   --cache-dir /cache \
