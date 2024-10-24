@@ -38,9 +38,10 @@ WORKDIR /app
 # COPY start.sh /app/start.sh
 COPY supervisord/*.sh /app/
 
+# 安装fuse2，要不然报错
 RUN apt update \
-    && apt install -y wget fuse3 supervisor \
-    && echo "user_allow_other" >> /etc/fuse.conf \
+    && apt install -y wget fuse supervisor \
+##    && echo "user_allow_other" >> /etc/fuse.conf \
 ##    && ln -s $(which fusermount) /usr/bin/fusermount3 \
     && mkdir -p /etc/supervisor/conf.d \
     && chmod +x /usr/local/bin/rclone \
