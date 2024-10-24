@@ -1,2 +1,2 @@
 #* * * * * sudo -u www-data php /var/www/html/app/bin/legacy -C cron > /var/log/cron.log 2>&1
-* * * * * php /var/www/html/app/bin/legacy -C cron > /proc/1/fd/1 2>&1
+* * * * * sudo -u www-data php /var/www/html/app/bin/legacy -C cron > /proc/1/fd/1 2>&1
