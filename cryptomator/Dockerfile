@@ -40,7 +40,7 @@ COPY supervisord/*.sh /app/
 RUN apt update \
     && apt install -y wget fuse3 supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
-##    && ln -s $(which fusermount) /usr/bin/fusermount3 \
+    && ln -s $(which fusermount) /usr/bin/fusermount3 \
     && mkdir -p /etc/supervisor/conf.d \
     && chmod +x /usr/local/bin/rclone \
     && chmod +x /app/*.sh \
