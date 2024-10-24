@@ -42,7 +42,8 @@ RUN apt update \
 && ln -s $(which fusermount) /usr/bin/fusermount3 \
 && mkdir -p /etc/supervisor/conf.d \
 && chmod +x /usr/local/bin/rclone \
-&& chmod +x /app/*.sh
+&& chmod +x /app/*.sh \
+&& touch /var/log/supervisord.log
 
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
