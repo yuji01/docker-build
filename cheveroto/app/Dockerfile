@@ -34,34 +34,29 @@ RUN docker-php-ext-configure gd --with-jpeg --with-freetype --with-webp \
     && pecl install imagick \
     && docker-php-ext-enable imagick
 
+# 复制文件
+COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
+
 # 复制自定义 php.ini
 COPY php.ini /usr/local/etc/php/php.ini
-
-# 复制nginx配置文件
-COPY nginx/*.conf /etc/nginx/
 
 # 复制 开心版 文件
 COPY --from=builder /tmp/html /var/www/html
 
+# 复制nginx配置文件
+COPY nginx/*.conf /etc/nginx/
+
 # 复制 cron 任务
 COPY cheveroto_cron_job /etc/cron.d/chevereto
-RUN crontab /etc/cron.d/chevereto \
-    && touch /var/log/cron.log
-
+ 
 # 清理无用的缓存文件
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
-
-# 授权
-RUN chown -R www-data:www-data \
-    /etc/nginx \
-    /etc/supervisor/ \
-    /var/www/html \
-    /etc/cron.d/ \
-    /usr/local/ \
-    /var/log/ \
-    /var/run/
+RUN crontab /etc/cron.d/chevereto \
+    && touch /var/log/cron.log \
+    && chown -R www-data:www-data /var/www/html \
+    && echo "user = www-data" >> /usr/local/etc/php-fpm.conf \
+    && echo "group = www-data" >> /usr/local/etc/php-fpm.conf \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # 声明 volume 
 VOLUME /var/www/html
