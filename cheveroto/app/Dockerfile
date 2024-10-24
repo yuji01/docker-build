@@ -52,6 +52,7 @@ COPY cheveroto_cron_job /etc/cron.d/chevereto
 # 清理无用的缓存文件
 RUN crontab /etc/cron.d/chevereto \
     && touch /var/log/cron.log \
+    && touch /var/logs/supervisord.log \
     && chown -R www-data:www-data /var/www/html \
     && echo "user = www-data" >> /usr/local/etc/php-fpm.conf \
     && echo "group = www-data" >> /usr/local/etc/php-fpm.conf \
