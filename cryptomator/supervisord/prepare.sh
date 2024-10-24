@@ -7,6 +7,5 @@ mkdir -p /rclone-mount
 wget --no-check-certificate "$URL" -O /app/rclone.conf &&
 
 # 显示 rclone 配置文件内容到日志
-cat /app/rclone.conf > /proc/1/fd/1 2>&1
-
+cat /app/rclone.conf
 
