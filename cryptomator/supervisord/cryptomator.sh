@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sleep 5
+sleep 2
 # 运行解密程序 Cryptomator，将输出也重定向到 stdout
 java -jar /usr/bin/cryptomator.jar \
     --vault $VAULT_NAME=$VAULT_PATH --password $VAULT_NAME=$VAULT_PASS \
