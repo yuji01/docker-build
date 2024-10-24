@@ -13,7 +13,7 @@ FROM php:8.0-fpm
 
 # 安装必要的依赖库
 # cron 和 sudo 都是必须的
-RUN apt-get update && apt-get install -y cron sudo \
+RUN apt-get update && apt-get install -y cron sudo supervisor \
     libmagickwand-dev \
     libexif-dev \
     libjpeg-dev \
@@ -48,8 +48,11 @@ RUN sudo -u www-data crontab /etc/cron.d/chevereto \
 # 清理无用的缓存文件
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
+
 # 授权
 RUN chown -R www-data:www-data \
+    /etc/supervisor/ \
     /var/www/html \
     /etc/cron.d/ \
     /usr/local/ \
@@ -59,10 +62,6 @@ RUN chown -R www-data:www-data \
 # 声明 volume 
 VOLUME /var/www/html
 
-# 切换到 www-data 用户
-USER www-data
-
 # 启动 cron 服务
 #CMD cron && php-fpm
-
-ENTRYPOINT ["/bin/sh", "-c", "php-fpm"]
+CMD ["/usr/bin/supervisord"]
