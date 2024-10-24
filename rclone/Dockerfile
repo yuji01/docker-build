@@ -34,4 +34,4 @@ RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
 RUN addgroup -g 1009 rclone && adduser -u 1009 -Ds /bin/sh -G rclone rclone
 
 ENTRYPOINT [ "/app/start.sh" ]
-CMD [ "/app/cmd.sh" ]
+CMD [ "/app/rclone.sh" ]
