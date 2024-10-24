@@ -1,7 +1,8 @@
 #! /bin/bash
 
 # 启动 rclone，并将输出重定向到 stdout
-exec rclone --config /app/rclone.conf mount $REMOTE /mnt \
+exec rclone --config /app/rclone.conf \
+  --umask=0 mount $REMOTE /mnt \
   --allow-non-empty \
   --allow-other \
   --cache-dir /cache \
@@ -13,5 +14,4 @@ exec rclone --config /app/rclone.conf mount $REMOTE /mnt \
   --vfs-read-chunk-size-limit 2G \
   --transfers 16 \
   --dir-cache-time 72h \
-  --fast-list \
   --log-level INFO
