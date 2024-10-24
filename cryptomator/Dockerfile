@@ -39,9 +39,10 @@ WORKDIR /app
 COPY supervisord/*.sh /app/
 
 # 安装fuse2，要不然报错，毕竟21年的程序
+# 但是rclone又是用fusermount3
 RUN apt update \
-    && apt install -y wget fuse supervisor \
-##    && echo "user_allow_other" >> /etc/fuse.conf \
+    && apt install -y wget fuse fuse3 supervisor \
+    && echo "user_allow_other" >> /etc/fuse.conf \
 ##    && ln -s $(which fusermount) /usr/bin/fusermount3 \
     && mkdir -p /etc/supervisor/conf.d \
     && chmod +x /usr/local/bin/rclone \
