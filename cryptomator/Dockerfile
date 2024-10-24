@@ -38,12 +38,12 @@ WORKDIR /app
 COPY supervisord/*.sh /app/
 
 RUN apt update \
-&& apt install -y wget fuse supervisor \
-&& ln -s $(which fusermount) /usr/bin/fusermount3 \
-&& mkdir -p /etc/supervisor/conf.d \
-&& chmod +x /usr/local/bin/rclone \
-&& chmod +x /app/*.sh \
-&& touch /var/log/supervisord.log
+    && apt install -y wget fuse supervisor \
+    && ln -s $(which fusermount) /usr/bin/fusermount3 \
+    && mkdir -p /etc/supervisor/conf.d \
+    && chmod +x /usr/local/bin/rclone \
+    && chmod +x /app/*.sh \
+    && touch /var/log/supervisord.log
 
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
