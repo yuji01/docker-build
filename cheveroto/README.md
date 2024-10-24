@@ -2,10 +2,7 @@
 chevereto 4.0.7
 
 > 镜像说明：
->
-> - `yujibuzailai/chevereto:web` : 用于 php-fpm 的 web 镜像
-> - `yujibuzailai/chevereto:china` : 包含了开心版的 php-fpm 镜像
-> - 二者缺一不可
+> - `yujibuzailai/chevereto:china` : 包含了开心版的 php-fpm 镜像，内置nginx
 
 ## 使用方法
 
@@ -15,28 +12,18 @@ chevereto 4.0.7
 ```yaml
 name: chevereto
 services:
-    php-fpm: # 这个名字不要改
+    app:
         image: yujibuzailai/chevereto:china
         restart: always
-        container_name: chevereto-php-fpm
+        container_name: chevereto4
         env_file:
             - .env # 引用环境变量文件
         volumes:
             - './html:/var/www/html'
         networks:
             - chevereto
-    web:
-        image: yujibuzailai/chevereto:web
-        restart: always
-        container_name: chevereto-web
-        networks:
-            - chevereto
         ports:
             - '8080:80'
-        volumes:
-            - './html:/var/www/html'
-        depends_on:
-            - php-fpm
 
 networks:
     chevereto:
