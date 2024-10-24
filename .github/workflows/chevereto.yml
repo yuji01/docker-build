@@ -46,7 +46,7 @@ jobs:
       - name: Build chevereto app image # 构建且推送docker镜像
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/amd64 \
             -t ${DOCKERHUB_REPOSITORY}:china \
             -f cheveroto/app/Dockerfile \
             --push \
