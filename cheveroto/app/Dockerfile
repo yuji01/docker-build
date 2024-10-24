@@ -63,5 +63,6 @@ VOLUME /var/www/html
 USER www-data
 
 # 启动 cron 服务
-CMD cron && php-fpm
+#CMD cron && php-fpm
 
+ENTRYPOINT ["/bin/sh", "-c", "cron && php-fpm"]
