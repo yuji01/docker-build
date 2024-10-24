@@ -42,7 +42,7 @@ COPY --from=builder /tmp/html /var/www/html
 
 # 复制 cron 任务
 COPY cheveroto_cron_job /etc/cron.d/chevereto
-RUN crontab /etc/cron.d/chevereto \
+RUN sudo -u www-data crontab /etc/cron.d/chevereto \
     && touch /var/log/cron.log
 
 # 清理无用的缓存文件
