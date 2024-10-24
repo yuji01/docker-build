@@ -15,8 +15,7 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY start.sh /app/start.sh
-COPY cmd.sh /app/cmd.sh
+COPY *.sh /app/
 
 COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
 
@@ -27,8 +26,7 @@ RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
     && echo "Asia/Shanghai" > /etc/timezone \
     # 配置权限
     && chmod +x /usr/local/bin/rclone \
-    && chmod +x /app/start.sh \
-    && chmod +x /app/cmd.sh \
+    && chmod +x /app/*.sh \
     # 删除缓存
     && rm -rf /var/cache/apk/*
 
@@ -37,4 +35,3 @@ RUN addgroup -g 1009 rclone && adduser -u 1009 -Ds /bin/sh -G rclone rclone
 
 ENTRYPOINT [ "/app/start.sh" ]
 CMD [ "/app/cmd.sh" ]
-#CMD ["sh", "-c", "rclone --config /app/rclone.conf mount $REMOTE /mnt --allow-non-empty --allow-other --buffer-size 256M --cache-dir /cache --vfs-cache-mode writes --vfs-cache-max-size 2G --vfs-read-chunk-size 64M --transfers 16 --log-level INFO"]
