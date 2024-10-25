@@ -19,11 +19,8 @@ COPY *.sh /app/
 
 COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
 
-RUN apk --no-cache add bash wget ca-certificates fuse3 tzdata \
+RUN apk --no-cache add bash wget fuse3 \
     && echo "user_allow_other" >> /etc/fuse.conf \
-    # 配置时区
-    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo "Asia/Shanghai" > /etc/timezone \
     # 配置权限
     && chmod +x /usr/local/bin/rclone \
     && chmod +x /app/*.sh \
