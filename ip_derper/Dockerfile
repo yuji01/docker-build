@@ -27,8 +27,7 @@ ENV DERP_PORT 443 \
 COPY --from=builder /etc/derp/derper /app/derper
 COPY start.sh /app/
 
-RUN apt update \
-    && apt install -y openssl curl \
+RUN apk --no-cache add openssl curl \
     && mkdir -p /app/certs \
     && chmod +x /app/derper \
     && chmod +x /app/start.sh
