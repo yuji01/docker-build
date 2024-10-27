@@ -1,0 +1,8 @@
+name: frps
+services:
+    frps:
+        image: yujibuzailai/frps
+        restart: always
+        network_mode: "host"
+        environment:
+            "URL": "" # 配置文件下载直链
