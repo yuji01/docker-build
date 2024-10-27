@@ -29,8 +29,7 @@ COPY --from=builder /etc/derp/derper /app/derper
 COPY start.sh /app/
 
 RUN apt update \
-    apt install -y openssl curl \
-    && mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
+    && apt install -y openssl curl \
     && mkdir -p /app/certs \
     && chmod +x /app/derper \
     && chmod +x /app/start.sh
