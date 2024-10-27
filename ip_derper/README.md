@@ -1,18 +1,24 @@
 # ip-derper
 
-1. build
-
+> 已在阿里云上测试，成功运行
+```yaml
+name: ip_derper
+services:
+    derper:
+        image: yujibuzailai/ip_derper
+        container_name: ip_derper
+        restart: always
+        network_mode: "host"
+        volumes:
+            - '/var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock' # 开启防止白嫖后的操作，虽然也没什么用
+        environment:
+            - DERP_PORT=50443 # derper运行端口
+            - DERP_STUN=true # 是否开启stun，默认开启
+            - DERP_STUN_PORT=3478 # stun端口，默认3478
+            - DERP_VERIFY_CLIENTS=true # 开启防止白嫖，本机需要先加入tailscale节点
 ```
-docker build --no-cache -t yujibuzailai/ip_derper .
-```
 
-2. run
-
-```
-docker run --rm -d -p 50443:443 -p 3478:3478/udp yujibuzailai/ip_derper
-```
-
-3. modify tailscale ACLs
+1. modify tailscale ACLs
 
 inserts this into tailscale ACLs: https://login.tailscale.com/admin/acls
 ```json
@@ -68,13 +74,11 @@ inserts this into tailscale ACLs: https://login.tailscale.com/admin/acls
 
 
 ```
-
+## 修改代理，使其使用ip
 enjoy :)
 
 1. 下载并修改
 ```
-git clone https://github.com/yuji01/ip_derper.git
-cd ip_derper
 git clone https://github.com/tailscale/tailscale.git tailscale --depth 1
 ```
 2. 找到 tailscale 仓库中的 cmd/derper/cert.go 文件，将与域名验证相关的内容删除或注释：
@@ -89,7 +93,4 @@ func (m *manualCertManager) getCertificate(hi *tls.ClientHelloInfo) (*tls.Certif
 }
 ...
 ```
-3. 编译
-```
-docker build --no-cache -t yujibuzailai/ip_derper .
-```
+3. 编译后的文件就可以使用ip了
