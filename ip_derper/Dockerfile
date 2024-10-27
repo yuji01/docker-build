@@ -14,12 +14,11 @@ RUN derper_dir=$(find /go/pkg/mod/tailscale.com@*/cmd/derper -type d) && \
     go build -o /etc/derp/derper
 
 # 生成最终镜像
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 WORKDIR /app
 
-ENV LANG C.UTF-8 \
-    DERP_PORT 443 \
+ENV DERP_PORT 443 \
     DERP_STUN true \
     DERP_STUN_PORT 3478 \
     DERP_VERIFY_CLIENTS false
