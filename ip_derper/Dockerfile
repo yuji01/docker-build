@@ -1,9 +1,6 @@
 # 来源：https://www.nodeseek.com/post-146521-1
 # 编译
-FROM golang:alpine AS builder
-
-# 切换模块源为中国Go模块代理服务器
-# RUN go env -w GOPROXY=https://goproxy.cn,direct
+FROM golang:latest AS builder
 
 # 拉取代码
 RUN go install tailscale.com/cmd/derper@latest
@@ -17,7 +14,7 @@ RUN derper_dir=$(find /go/pkg/mod/tailscale.com@*/cmd/derper -type d) && \
     go build -o /etc/derp/derper
 
 # 生成最终镜像
-FROM alpine:latest
+FROM ubuntu:20.04
 
 WORKDIR /app
 
@@ -31,11 +28,8 @@ ENV LANG C.UTF-8 \
 COPY --from=builder /etc/derp/derper /app/derper
 COPY start.sh /app/
 
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo 'Asia/Shanghai' > /etc/timezone \
-    && mkdir /lib64 \
-    && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
-    && apk --no-cache add openssl \
+RUN apt update \
+    apt install -y openssl curl \
     && mkdir -p /app/certs \
     && chmod +x /app/derper \
     && chmod +x /app/start.sh
