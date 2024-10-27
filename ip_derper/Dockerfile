@@ -1,6 +1,6 @@
 # 来源：https://www.nodeseek.com/post-146521-1
 # 编译
-FROM golang:latest AS builder
+FROM golang:alpine AS builder
 
 # 拉取代码
 RUN go install tailscale.com/cmd/derper@latest
@@ -14,7 +14,7 @@ RUN derper_dir=$(find /go/pkg/mod/tailscale.com@*/cmd/derper -type d) && \
     go build -o /etc/derp/derper
 
 # 生成最终镜像
-FROM ubuntu:22.04
+FROM alpine:latest
 
 WORKDIR /app
 
