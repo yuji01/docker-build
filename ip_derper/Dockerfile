@@ -28,7 +28,7 @@ ENV LANG C.UTF-8 \
     DERP_VERIFY_CLIENTS false
 
 
-COPY --from=builder /etc/derp/derper .
+COPY --from=builder /etc/derp/derper /app/derper
 COPY start.sh /app/
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
@@ -37,6 +37,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
     && apk add openssl \
     && mkdir -p /app/certs \
+    && chmod +x /app/derper \
     && chmod +x /app/start.sh
 
 ##    && openssl req -x509 -newkey rsa:4096 -sha256 -days 36500 -nodes -keyout /app/certs/derp.narutos.top.key -out /app/certs/derp.narutos.top.crt -subj "/CN=derp.narutos.top" -addext "subjectAltName=DNS:derp.narutos.top"
