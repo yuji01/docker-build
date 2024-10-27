@@ -34,7 +34,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build image frps# 构建且推送docker镜像
+      - name: Build image
         run: |
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
