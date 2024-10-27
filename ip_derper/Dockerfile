@@ -26,8 +26,10 @@ ENV LANG C.UTF-8 \
     DERP_STUN true \
     DERP_STUN_PORT 3478 \
     DERP_VERIFY_CLIENTS false
-    
+
+
 COPY --from=builder /etc/derp/derper .
+COPY start.sh /app/
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone \
@@ -35,7 +37,9 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2 \
     && apk add openssl \
     && mkdir -p /app/certs \
-    && openssl req -x509 -newkey rsa:4096 -sha256 -days 36500 -nodes -keyout /app/certs/derp.narutos.top.key -out /app/certs/derp.narutos.top.crt -subj "/CN=derp.narutos.top" -addext "subjectAltName=DNS:derp.narutos.top"
+    && chmod +x /app/start.sh
+
+##    && openssl req -x509 -newkey rsa:4096 -sha256 -days 36500 -nodes -keyout /app/certs/derp.narutos.top.key -out /app/certs/derp.narutos.top.crt -subj "/CN=derp.narutos.top" -addext "subjectAltName=DNS:derp.narutos.top"
 
 # 命令解释：
 # 创建软链接 解决二进制无法执行问题 Amd架构必须执行，Arm不需要执行
@@ -51,4 +55,5 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 #RUN openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout /ssl/derp.javaow.com.key -out /ssl/derp.javaow.com.crt -subj "/CN=derp.javaow.com" -addext "subjectAltName=DNS:derp.javaow.com"
 
 # 启动命令
-CMD ./derper -a :$DERP_PORT -certdir /app/certs -certmode manual -derp -hostname derp.narutos.top -http-port -1 -stun $DERP_STUN -stun-port $DERP_STUN_PORT -verify-clients $DERP_VERIFY_CLIENTS
+##CMD ./derper -a :$DERP_PORT -certdir /app/certs -certmode manual -derp -hostname derp.narutos.top -http-port -1 -stun $DERP_STUN -stun-port $DERP_STUN_PORT -verify-clients $DERP_VERIFY_CLIENTS
+ENTRYPOINT ["/app/start.sh"]
