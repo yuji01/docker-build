@@ -46,7 +46,7 @@ COPY supervisord/*.sh /app/
 
 RUN apk --no-cache update \
     && apk --no-cache upgrade \
-    && apk --no-cache add openjdk17-jre-headless \
+    && apk --no-cache add openjdk17-jre-headless tzdata \
            wget fuse supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
     && ln -s $(which fusermount) /usr/bin/fusermount3 \
