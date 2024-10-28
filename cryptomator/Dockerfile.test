@@ -33,8 +33,9 @@ ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk \
 EXPOSE 5005
 
 COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone \
-    --from=builder /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar \
-    supervisord/*.sh /app/
+    --from=builder /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar
+
+COPY supervisord/*.sh /app/
 
 # 安装fuse2，要不然报错，毕竟21年的程序
 # 但是rclone又是用fusermount3
@@ -50,6 +51,5 @@ RUN apk --no-cache update \
     && touch /var/log/supervisord.log
 
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
-
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
