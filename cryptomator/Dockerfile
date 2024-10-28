@@ -48,7 +48,7 @@ RUN apt update \
     && mkdir -p /etc/supervisor/conf.d \
     && chmod +x /usr/local/bin/rclone \
     && chmod +x /app/*.sh \
-    && touch /var/log/supervisord.log
+    && touch /var/log/supervisord.log \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
