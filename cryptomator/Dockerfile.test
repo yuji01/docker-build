@@ -20,7 +20,10 @@ FROM alpine
 
 WORKDIR /app
 
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk \
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8 \
+    JAVA_HOME=/usr/lib/jvm/java-17-openjdk \
     VAULT_NAME=demoVault \
     VAULT_PATH=/rclone-mount \
     VAULT_PASS=password \
