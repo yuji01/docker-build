@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # 清理逻辑
 cleanup() {
