@@ -12,7 +12,8 @@ RUN apk --no-cache add bash wget curl unzip\
 RUN wget https://github.com/cryptomator/cli/releases/download/0.5.1/cryptomator-cli-0.5.1.jar -O /usr/bin/cryptomator.jar
 
 # 尝试使用24
-FROM alpine
+#FROM alpine
+FROM aehrc/jre:openjdk-17
 #FROM openjdk:17-slim
 # FROM openjdk:11-jre-slim
 # JDK 会增大图像大小，只需要 JRE。但没有 17-JRE 版本
@@ -20,11 +21,7 @@ FROM alpine
 
 WORKDIR /app
 
-ENV LANG=en_US.UTF-8 \
-    LANGUAGE=en_US:en \
-    LC_ALL=en_US.UTF-8 \
-    JAVA_HOME=/usr/lib/jvm/java-17-openjdk \
-    VAULT_NAME=demoVault \
+ENV VAULT_NAME=demoVault \
     VAULT_PATH=/rclone-mount \
     VAULT_PASS=password \
     VAULT_BIND=0.0.0.0 \
@@ -44,10 +41,7 @@ COPY supervisord/*.sh /app/
 # 但是rclone又是用fusermount3
 # 同时安装又会报错，只能用软连接了
 
-RUN apk --no-cache update \
-    && apk --no-cache upgrade \
-    && apk --no-cache add openjdk17-jre-headless tzdata \
-           wget fuse supervisor \
+RUN apk --no-cache add wget fuse supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
     && ln -s $(which fusermount) /usr/bin/fusermount3 \
     && mkdir -p /etc/supervisor/conf.d \
