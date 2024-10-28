@@ -32,8 +32,8 @@ ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk \
 
 EXPOSE 5005
 
-COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone \
-    --from=builder /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar
+COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
+COPY --from=builder /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar
 
 COPY supervisord/*.sh /app/
 
