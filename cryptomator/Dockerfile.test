@@ -53,4 +53,4 @@ RUN apk add --no-cache wget fuse supervisor \
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
