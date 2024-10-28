@@ -12,22 +12,22 @@ RUN apk --no-cache add bash wget curl unzip\
 RUN wget https://github.com/cryptomator/cli/releases/download/0.5.1/cryptomator-cli-0.5.1.jar -O /usr/bin/cryptomator.jar
 
 # 尝试使用24
-FROM aehrc/jre:openjdk-17
+FROM alpine
 #FROM openjdk:17-slim
 # FROM openjdk:11-jre-slim
 # JDK 会增大图像大小，只需要 JRE。但没有 17-JRE 版本
 # 最低java17
 
 
-
-ENV VAULT_NAME demoVault
-ENV VAULT_PATH /rclone-mount
-ENV VAULT_PASS password
-ENV VAULT_BIND 0.0.0.0
-ENV CRYPTOMATOR_PORT 5005
-ENV VAULT_MOUNT /mnt
-ENV URL ""
-ENV REMOTE ""
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+ENV VAULT_NAME=demoVault
+ENV VAULT_PATH=/rclone-mount
+ENV VAULT_PASS=password
+ENV VAULT_BIND=0.0.0.0
+ENV CRYPTOMATOR_PORT=5005
+ENV VAULT_MOUNT=/mnt
+ENV URL=""
+ENV REMOTE=""
 
 EXPOSE 5005
 
@@ -42,7 +42,9 @@ COPY supervisord/*.sh /app/
 # 安装fuse2，要不然报错，毕竟21年的程序
 # 但是rclone又是用fusermount3
 # 同时安装又会报错，只能用软连接了
-RUN apk add --no-cache wget fuse supervisor \
+
+RUN apk --no-cache update \
+    && apk --no-cache add openjdk17-jre-headless wget fuse supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
     && ln -s $(which fusermount) /usr/bin/fusermount3 \
     && mkdir -p /etc/supervisor/conf.d \
