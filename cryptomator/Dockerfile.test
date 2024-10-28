@@ -12,10 +12,11 @@ RUN apk --no-cache add bash wget curl unzip\
 RUN wget https://github.com/cryptomator/cli/releases/download/0.5.1/cryptomator-cli-0.5.1.jar -O /usr/bin/cryptomator.jar
 
 # 尝试使用24
-FROM openjdk:24-slim
+FROM aehrc/jre:openjdk-17
 #FROM openjdk:17-slim
 # FROM openjdk:11-jre-slim
-# JDK could bloat the image size, only need JRE. But there is no 17-jre build
+# JDK 会增大图像大小，只需要 JRE。但没有 17-JRE 版本
+# 最低java17
 
 
 
@@ -35,14 +36,13 @@ COPY --from=builder /usr/bin/cryptomator.jar /usr/bin/cryptomator.jar
 
 WORKDIR /app
 
-# COPY start.sh /app/start.sh
+
 COPY supervisord/*.sh /app/
 
 # 安装fuse2，要不然报错，毕竟21年的程序
 # 但是rclone又是用fusermount3
 # 同时安装又会报错，只能用软连接了
-RUN apt update \
-    && apt install -y wget fuse supervisor \
+RUN apk add --no-cache wget fuse supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
     && ln -s $(which fusermount) /usr/bin/fusermount3 \
     && mkdir -p /etc/supervisor/conf.d \
@@ -52,7 +52,5 @@ RUN apt update \
 
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
-# run at startup
-#ENTRYPOINT [ "/app/start.sh" ]
+
 CMD ["/usr/bin/supervisord"]
-#CMD /app/start.sh
