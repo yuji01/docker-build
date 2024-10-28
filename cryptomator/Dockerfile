@@ -11,9 +11,9 @@ RUN apk --no-cache add bash wget curl unzip\
 
 RUN wget https://github.com/cryptomator/cli/releases/download/0.5.1/cryptomator-cli-0.5.1.jar -O /usr/bin/cryptomator.jar
 
-# 尝试使用24
-FROM openjdk:24-slim
-#FROM openjdk:17-slim
+
+#FROM openjdk:24-slim
+FROM openjdk:17-slim
 # FROM openjdk:11-jre-slim
 # JDK could bloat the image size, only need JRE. But there is no 17-jre build
 
