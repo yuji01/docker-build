@@ -13,7 +13,7 @@ RUN wget https://github.com/cryptomator/cli/releases/download/0.5.1/cryptomator-
 
 # 尝试使用24
 #FROM alpine
-FROM aehrc/jre:openjdk-17
+FROM ubuntu:jammy
 #FROM openjdk:17-slim
 # FROM openjdk:11-jre-slim
 # JDK 会增大图像大小，只需要 JRE。但没有 17-JRE 版本
@@ -21,7 +21,9 @@ FROM aehrc/jre:openjdk-17
 
 WORKDIR /app
 
-ENV VAULT_NAME=demoVault \
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 \
+    PATH="${PATH}:${JAVA_HOME}/bin" \
+    VAULT_NAME=demoVault \
     VAULT_PATH=/rclone-mount \
     VAULT_PASS=password \
     VAULT_BIND=0.0.0.0 \
@@ -41,13 +43,17 @@ COPY supervisord/*.sh /app/
 # 但是rclone又是用fusermount3
 # 同时安装又会报错，只能用软连接了
 
-RUN apk add --no-cache wget fuse supervisor \
+RUN apt update \
+    && apt install -y openjdk-17-jre \
+           wget fuse supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
     && ln -s $(which fusermount) /usr/bin/fusermount3 \
     && mkdir -p /etc/supervisor/conf.d \
     && chmod +x /usr/local/bin/rclone \
     && chmod +x /app/*.sh \
-    && touch /var/log/supervisord.log
+    && touch /var/log/supervisord.log \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
