@@ -19,14 +19,14 @@ FROM openjdk:24-slim
 
 
 
-ENV VAULT_NAME demoVault
-ENV VAULT_PATH /rclone-mount
-ENV VAULT_PASS password
-ENV VAULT_BIND 0.0.0.0
-ENV CRYPTOMATOR_PORT 5005
-ENV VAULT_MOUNT /mnt
-ENV URL ""
-ENV REMOTE ""
+ENV VAULT_NAME=demoVault \
+    VAULT_PATH=/rclone-mount \
+    VAULT_PASS=password \
+    VAULT_BIND=0.0.0.0 \
+    CRYPTOMATOR_PORT=5005 \
+    VAULT_MOUNT=/mnt \
+    URL="" \
+    REMOTE=""
 
 EXPOSE 5005
 
@@ -49,10 +49,11 @@ RUN apt update \
     && chmod +x /usr/local/bin/rclone \
     && chmod +x /app/*.sh \
     && touch /var/log/supervisord.log
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY supervisord/supervisord.conf /etc/supervisor/conf.d/
 
 # run at startup
 #ENTRYPOINT [ "/app/start.sh" ]
-CMD ["/usr/bin/supervisord"]
-#CMD /app/start.sh
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
