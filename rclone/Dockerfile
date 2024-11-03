@@ -24,6 +24,7 @@ RUN apk --no-cache add bash wget fuse3 supervisor \
     # 配置权限
     && chmod +x /usr/local/bin/rclone \
     && chmod +x /app/*.sh \
+    && touch /var/log/supervisord.log \
     # 删除缓存
     && rm -rf /var/cache/apk/*
 
