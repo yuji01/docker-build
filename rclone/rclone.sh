@@ -3,7 +3,7 @@
 if [ ! -f /app/lock ];then
 
   # 创建 rclone 挂载点
-  mkdir -p /rclone-mount
+  mkdir -p /mnt
   
   # 创建 rclone 配置目录并下载配置文件
   wget --no-check-certificate "$URL" -O /app/rclone.conf &&
@@ -15,9 +15,9 @@ fi
 
 # 清理逻辑
 cleanup() {
-    echo "Unmounting /rclone-mount..."
-    fusermount -u /rclone-mount
-    echo "Unmounted /rclone-mount"
+    echo "Unmounting /mnt..."
+    fusermount -u /mnt
+    echo "Unmounted /mnt"
     exit 0
 }
 
