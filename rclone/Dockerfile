@@ -19,7 +19,7 @@ COPY *.sh /app/
 
 COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
 
-RUN apk --no-cache add bash wget fuse3 \
+RUN apk --no-cache add bash wget fuse3 supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
     # 配置权限
     && chmod +x /usr/local/bin/rclone \
@@ -30,5 +30,6 @@ RUN apk --no-cache add bash wget fuse3 \
 # 创建用户和用户组
 RUN addgroup -g 1009 rclone && adduser -u 1009 -Ds /bin/sh -G rclone rclone
 
-ENTRYPOINT [ "/app/start.sh" ]
-CMD [ "/app/rclone.sh" ]
+COPY supervisord.conf /etc/supervisor/conf.d/
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
