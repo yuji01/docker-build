@@ -6,7 +6,13 @@ if [ ! -f /app/lock ];then
   mkdir -p /mnt
   
   # 创建 rclone 配置目录并下载配置文件
-  wget --no-check-certificate "$URL" -O /app/rclone.conf &&
+  wget --no-check-certificate -q "$URL" -O /app/rclone.conf.tmp
+  
+  if [[ $? -eq 0 ]]; then
+    mv /app/rclone.conf.tmp /app/rclone.conf  # 只有下载成功才重命名
+  else
+    echo "rclone 配置文件下载失败"
+  fi
   
   # 显示 rclone 配置文件内容到日志
   cat /app/rclone.conf && touch /app/lock
