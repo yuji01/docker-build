@@ -18,7 +18,7 @@ ENV VAULT_PATH=/rclone-mount \
     REMOTE=""
 
 
-COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
+#COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
 
 WORKDIR /app
 
@@ -29,7 +29,6 @@ RUN apt update \
     && apt install -y wget fuse3 unzip supervisor \
     && echo "user_allow_other" >> /etc/fuse.conf \
     && mkdir -p /etc/supervisor/conf.d \
-    && chmod +x /usr/local/bin/rclone \
     && chmod +x /app/*.sh \
     && touch /var/log/supervisord.log
 
