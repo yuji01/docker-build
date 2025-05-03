@@ -1,4 +1,4 @@
-name: "Docker Build cryptomator-rclone"
+name: "Docker Build cryptomator-cli-rclone"
 
 on:
   workflow_dispatch: # 手动运行
