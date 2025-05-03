@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest # 申请一个ubuntu的虚拟机
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/cryptomator:rclone
+      DOCKERHUB_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}/cryptomator-cli:rclone
 
     steps:
       - name: Checkout Code # 获取代码
