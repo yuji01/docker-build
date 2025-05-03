@@ -13,9 +13,7 @@ FROM ubuntu:latest
 
 ENV VAULT_PATH=/cryptonator-mount \
     VAULT_PASS=password \
-    VAULT_MOUNT=/mnt \
-    URL="" \
-    REMOTE=""
+    VAULT_MOUNT=/mnt
 
 
 #COPY --from=builder /usr/local/bin/rclone /usr/local/bin/rclone
