@@ -9,7 +9,7 @@ RUN apk --no-cache add bash wget curl unzip\
     && unzip rclone-${version}-linux-${OS_type}.zip \
     && cp rclone-${version}-linux-${OS_type}/rclone /usr/local/bin/rclone 
 
-FROM ubuntu:20.04
+FROM ubuntu
 
 ENV VAULT_PATH=/rclone-mount \
     VAULT_PASS=password \
@@ -33,9 +33,9 @@ RUN apt update \
     && chmod +x /app/*.sh \
     && touch /var/log/supervisord.log
 
-RUN wget https://github.com/cryptomator/cli/releases/download/0.6.2/cryptomator-cli-0.6.2-linux-x64.zip \
-    && unzip cryptomator-cli-0.6.2-linux-x64.zip -d /tmp/ \
-    && rm cryptomator-cli-0.6.2-linux-x64.zip \
+RUN wget https://github.com/cryptomator/cli/releases/download/0.6.1/cryptomator-cli-0.6.1-linux-x64.zip \
+    && unzip cryptomator-cli-0.6.1-linux-x64.zip -d /tmp/ \
+    && rm cryptomator-cli-0.6.1-linux-x64.zip \
     && mv /tmp/cryptomator-cli/ /app/ \
     && bash /app/cryptomator-cli/cryptomator-cli_completion.sh \
     && apt clean \
