@@ -39,6 +39,6 @@ jobs:
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
             -t ${DOCKERHUB_REPOSITORY} \
-            -f cryptomator-rclone/Dockerfile \
+            -f cryptomator-cli-rclone/Dockerfile \
             --push \
             cryptomator
