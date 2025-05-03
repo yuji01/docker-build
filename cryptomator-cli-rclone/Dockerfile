@@ -9,7 +9,7 @@ RUN apk --no-cache add bash wget curl unzip\
     && unzip rclone-${version}-linux-${OS_type}.zip \
     && cp rclone-${version}-linux-${OS_type}/rclone /usr/local/bin/rclone 
 
-FROM ubuntu:latest
+FROM ubuntu:20.04
 
 ENV VAULT_PATH=/rclone-mount \
     VAULT_PASS=password \
