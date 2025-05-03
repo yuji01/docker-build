@@ -41,4 +41,4 @@ jobs:
             -t ${DOCKERHUB_REPOSITORY} \
             -f cryptomator-cli-rclone/Dockerfile \
             --push \
-            cryptomator
+            cryptomator-cli-rclone
