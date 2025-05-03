@@ -10,6 +10,7 @@ RUN apk --no-cache add bash wget curl unzip\
     && cp rclone-${version}-linux-${OS_type}/rclone /usr/local/bin/rclone 
 
 FROM ubuntu
+ARG DEBIAN_FRONTEND=noninteractive
 
 ENV VAULT_PATH=/rclone-mount \
     VAULT_PASS=password \
