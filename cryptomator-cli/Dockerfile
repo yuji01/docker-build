@@ -11,7 +11,7 @@ RUN apk --no-cache add bash wget curl unzip\
 
 FROM ubuntu:latest
 
-ENV VAULT_PATH=/rclone-mount \
+ENV VAULT_PATH=/cryptonator-mount \
     VAULT_PASS=password \
     VAULT_MOUNT=/mnt \
     URL="" \
