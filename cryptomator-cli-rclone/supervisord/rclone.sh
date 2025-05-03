@@ -21,9 +21,6 @@ cleanup() {
     exit 0
 }
 
-# 捕获 SIGTERM 信号
-trap cleanup SIGTERM
-
 # 启动 rclone，并将输出重定向到 stdout
 rclone --config /app/rclone.conf \
   --umask=0 mount $REMOTE /rclone-mount \
@@ -36,7 +33,7 @@ rclone --config /app/rclone.conf \
   --vfs-cache-max-size 2G \
   --vfs-read-chunk-size 64M \
   --vfs-read-chunk-size-limit 2G \
-  --transfers 16 \
+  --transfers 64 \
   --dir-cache-time 72h \
   --fast-list \
   --log-level INFO
