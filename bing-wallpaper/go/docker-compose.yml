@@ -1,0 +1,7 @@
+services:
+    bing-wallpaper:
+        image: yujibuzailai/bing-wallpaper:go
+        container_name: bing-wallpaper
+        restart: always
+        ports:
+            - 8080:8080
