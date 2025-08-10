@@ -1,14 +1,14 @@
-FROM alpine:latest AS builder
+#FROM alpine:latest AS builder
 
-RUN apk --no-cache add bash wget curl unzip\
-    # 根据平台动态下载 rclone
-    && version=$(echo $(curl -fsS https://downloads.rclone.org/version.txt)|grep -o v.*) \
-    && [ "$(uname -m)" = "x86_64" ] && OS_type=amd64 || OS_type=arm64 \
-    && wget https://github.com/rclone/rclone/releases/download/${version}/rclone-${version}-linux-${OS_type}.zip \
-    # 解压文件
-    && unzip rclone-${version}-linux-${OS_type}.zip \
-    && cp rclone-${version}-linux-${OS_type}/rclone /usr/local/bin/rclone 
-
+#RUN apk --no-cache add bash wget curl unzip\
+#    # 根据平台动态下载 rclone
+#    && version=$(echo $(curl -fsS https://downloads.rclone.org/version.txt)|grep -o v.*) \
+#    && [ "$(uname -m)" = "x86_64" ] && OS_type=amd64 || OS_type=arm64 \
+#    && wget https://github.com/rclone/rclone/releases/download/${version}/rclone-${version}-linux-${OS_type}.zip \
+#    # 解压文件
+#    && unzip rclone-${version}-linux-${OS_type}.zip \
+#    && cp rclone-${version}-linux-${OS_type}/rclone /usr/local/bin/rclone 
+#
 FROM ubuntu:latest
 
 ENV VAULT_PATH=/cryptonator-mount \
