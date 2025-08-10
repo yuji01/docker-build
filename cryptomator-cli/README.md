@@ -6,8 +6,9 @@
 - docker-compose.yml
 ```yaml
 services:
-    app:
-        image: yujibuzailai/cryptomator-cli
+    cryptomator:
+        image: yujibuzailai/cryptomator-cli:latest
+        restart: always
         container_name: cryptomator
         cap_add:
             - SYS_ADMIN
@@ -15,14 +16,15 @@ services:
             - /dev/fuse
         security_opt:
             - apparmor:unconfined
-        user: 0:0
         environment:
-            "VAULT_PASS": ""
-            "URL": "" # 配置文件下载直链
-            "REMOTE": "" # rclone远程挂载路径
+            "VAULT_NAME": "vault-immich"
+            "VAULT_PASS": "aaa"
+            "VAULT_MOUNT": "/mnt"
+            "VAULT_PATH": "/cryptonator-mount"
         volumes:
             - '/dev/fuse:/dev/fuse'
-            - './:/mnt:shared' # 加密文件解密路径
+            - '/mnt/nas2/immich2:/cryptonator-mount' # 加密文件路径，路径下得有 masterkey.cryptomator文件
+            - './upload_storage:/mnt:shared' # 加密文件解密路径
 ```
 
 ## 前提
