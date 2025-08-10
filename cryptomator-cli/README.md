@@ -17,14 +17,14 @@ services:
         security_opt:
             - apparmor:unconfined
         environment:
-            "VAULT_NAME": "vault-immich"
-            "VAULT_PASS": "aaa"
-            "VAULT_MOUNT": "/mnt"
-            "VAULT_PATH": "/cryptonator-mount"
+            "VAULT_PATH": "/cryptonator-mount" # 未解密的保险库路径
+            "VAULT_NAME": "vault-immich" # 保险库名称
+            "VAULT_PASS": "aaa" # 保险库密码
+            "VAULT_MOUNT": "/mnt" # 保险库解密路径
         volumes:
             - '/dev/fuse:/dev/fuse'
-            - '/mnt/nas2/immich2:/cryptonator-mount' # 加密文件路径，路径下得有 masterkey.cryptomator文件
-            - './upload_storage:/mnt:shared' # 加密文件解密路径
+            - '/mnt/nas2/immich2:/cryptonator-mount' # 映射本机保险库文件路径，路径下得有 masterkey.cryptomator 文件
+            - './unlock_file:/mnt:shared' # 解锁后的保险库挂载路径
 ```
 
 ## 前提
