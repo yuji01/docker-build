@@ -1,9 +1,6 @@
 FROM alpine:latest AS builder
 
 RUN apk --no-cache add bash wget curl unzip \
-    # 根据平台动态下载 rclone
-    && version=$(echo $(curl -fsS https://downloads.rclone.org/version.txt)|grep -o v.*) \
-    && [ "$(uname -m)" = "x86_64" ] && OS_type=amd64 || OS_type=arm64 \
     && wget https://github.com/lsky-org/lsky-pro/releases/download/2.1/lsky-pro-2.1.zip \
     # 解压文件
     && unzip lsky-pro-2.1.zip -d /app/lsky-pro-2.1 \
