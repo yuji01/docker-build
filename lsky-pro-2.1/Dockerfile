@@ -1,9 +1,10 @@
 FROM alpine:latest AS builder
 
 RUN apk --no-cache add bash wget curl unzip \
-    && wget https://github.com/lsky-org/lsky-pro/releases/download/2.1/lsky-pro-2.1.zip \
+    && mkdir -p /tmp \
+    && wget -O /tmp/lsky.zip https://github.com/lsky-org/lsky-pro/releases/download/2.1/lsky-pro-2.1.zip \
     # 解压文件
-    && unzip lsky-pro-2.1.zip -d /app/lsky-pro-2.1 \
+    && unzip /tmp/lsky.zip -d /tmp/lsky-pro-2.1 \
     && echo "解压完成"
 
 
@@ -24,7 +25,7 @@ RUN apt-get update \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 #COPY ./lsky-pro-2.1 /var/www/html
-COPY --from=builder /app/lsky-pro-2.1 /var/www/html
+COPY --from=builder /tmp/lsky-pro-2.1 /var/www/html
 
 WORKDIR /var/www/html
 
