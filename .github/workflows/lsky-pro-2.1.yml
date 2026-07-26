@@ -41,4 +41,4 @@ jobs:
             -t ${DOCKERHUB_REPOSITORY} \
             -f lsky-pro-2.1/Dockerfile \
             --push \
-            lsky-pro
+            lsky-pro-2.1
