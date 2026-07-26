@@ -13,15 +13,21 @@ FROM php:8.0-fpm
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update \
-    && apt-get install -y nginx libxml2-dev libonig-dev libmagickwand-dev python3-pip \
+    && apt-get install -y --no-install-recommends \
+       nginx \
+       libxml2-dev \
+       libonig-dev \
+       libmagickwand-dev \
+       python3-pip \
     && pip3 install supervisor \
     && docker-php-ext-install bcmath ctype dom fileinfo mbstring pdo tokenizer xml pdo_mysql \
-    && pecl install imagick \
+    # 👉 关键修复：用 printf 向 pecl 自动发送回车，避免卡死
+    && printf "\n" | pecl install imagick \
     && docker-php-ext-enable imagick pdo_mysql \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
-    && sed -i 's/^open_basedir\s*=.*/;open_basedir =/' /usr/local/etc/php/php.ini
+    && sed -i 's/^open_basedir\s*=.*/; open_basedir =/' /usr/local/etc/php/php.ini
 
 COPY nginx.conf /etc/nginx/nginx.conf
 #COPY ./lsky-pro-2.1 /var/www/html
