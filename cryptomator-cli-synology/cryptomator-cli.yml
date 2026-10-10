@@ -37,13 +37,13 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: cryptomator-cli
-          file: cryptomator-cli/Dockerfile
+          context: cryptomator-cli-synology
+          file: cryptomator-cli-synology/Dockerfile
           platforms: linux/amd64,linux/arm64   # 群晖有 x86 和 ARM 两种机型
           build-args: |
             CRYPTOMATOR_CLI_VERSION=${{ inputs.cli_version }}
           tags: |
-            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:synology
             ${{ env.IMAGE }}:${{ inputs.cli_version }}
           # 关闭 provenance/sbom 附带的额外 manifest，旧版 Docker（含部分群晖）拉取更稳
           provenance: false
