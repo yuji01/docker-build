@@ -26,7 +26,7 @@ RUN set -eux; \
         "https://github.com/cryptomator/cli/releases/download/${CRYPTOMATOR_CLI_VERSION}/cryptomator-cli-${CRYPTOMATOR_CLI_VERSION}-${asset}.zip"; \
     unzip -q /tmp/cli.zip -d /opt; \
     rm -f /tmp/cli.zip; \
-    echo "user_allow_other" >> /etc/fuse.conf; 
+    echo "user_allow_other" >> /etc/fuse.conf; \
     bash /app/cryptomator-cli/cryptomator-cli_completion.sh; \
     apt-get purge -y --auto-remove curl unzip; \
     rm -rf /var/lib/apt/lists/*
