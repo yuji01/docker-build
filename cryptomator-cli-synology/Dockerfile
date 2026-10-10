@@ -3,7 +3,8 @@
 # 固定基础镜像版本：ubuntu:latest 会随时间换成带更新 libfuse3 的版本，
 # cryptomator-cli 之前就因为 libfuse 3.17.1 挂载失败过（0.6.2 才修复）。
 # bookworm 自带 fuse3 3.14，和官方测试环境一致。
-FROM debian:bookworm-slim
+#FROM debian:bookworm-slim
+FROM ubuntu:24.04
 
 ARG CRYPTOMATOR_CLI_VERSION=0.6.2
 # buildx 会自动传入 amd64 / arm64
@@ -27,7 +28,7 @@ RUN set -eux; \
     unzip -q /tmp/cli.zip -d /opt; \
     rm -f /tmp/cli.zip; \
     echo "user_allow_other" >> /etc/fuse.conf; \
-    bash /opt/cryptomator-cli/cryptomator-cli_completion.sh; \
+    #bash /opt/cryptomator-cli/cryptomator-cli_completion.sh; \
     apt-get purge -y --auto-remove curl unzip; \
     rm -rf /var/lib/apt/lists/*
 
