@@ -11,6 +11,8 @@
 #   WEBDAV_PORT      webdav 模式的监听端口（对应 --loopbackPort）
 #                    注意：官方 FallbackMounter 只监听 localhost，会忽略监听地址参数，
 #                    所以 ports 映射无效，必须配合 network_mode: host 才能从容器外访问。
+#   VERBOSE          设为 1 打开 cryptomator-cli 详细日志（排查问题用）
+#   MOUNT_TIMEOUT    等待挂载成功的秒数，默认 60；超时会打印诊断信息
 #   EXTRA_ARGS       原样追加给 `cryptomator-cli unlock` 的参数
 set -u
 
@@ -66,6 +68,7 @@ else
 fi
 
 set -- unlock
+[ "${VERBOSE:-0}" = "1" ] && set -- "$@" -v
 case "$MOUNTER" in
     fuse)
         # 容器异常退出后，挂载点上可能残留失效的 FUSE 挂载，先清掉
@@ -119,10 +122,30 @@ log "启动 cryptomator-cli（mounter=$MOUNTER，vault=$VAULT_PATH）"
 "$CLI" "$@" &
 child=$!
 
+diagnose() {
+    log "---- 诊断信息 ----"
+    log "内核: $(uname -r)  熵池: $(cat /proc/sys/kernel/random/entropy_avail 2>/dev/null)"
+    log "/dev/fuse: $(ls -l /dev/fuse 2>&1)"
+    capeff=$(awk '/^CapEff/ {print $2}' /proc/self/status 2>/dev/null)
+    if [ -n "$capeff" ] && [ $((0x$capeff & 0x200000)) -ne 0 ]; then
+        log "SYS_ADMIN 权限: 有"
+    else
+        log "SYS_ADMIN 权限: 没有（检查 cap_add: SYS_ADMIN）"
+    fi
+    log "挂载点: $(ls -ld "$VAULT_MOUNT" 2>&1)"
+    log "当前 fuse 挂载: $(awk '$3 ~ /^fuse/ {print $2}' /proc/self/mounts | tr '\n' ' ')"
+    if kill -0 "$child" 2>/dev/null; then
+        log "cryptomator-cli 仍在运行但未完成挂载，请设置 VERBOSE=1 重试获取详细日志"
+    else
+        log "cryptomator-cli 已退出"
+    fi
+    log "------------------"
+}
+
 # 后台确认挂载成功，只用于日志和 webdav 的就绪标记
 (
     i=0
-    while [ "$i" -lt 60 ]; do
+    while [ "$i" -lt "${MOUNT_TIMEOUT:-60}" ]; do
         kill -0 "$child" 2>/dev/null || exit 0
         if [ "$MOUNTER" = "fuse" ]; then
             if is_fuse_mounted; then
@@ -138,7 +161,8 @@ child=$!
         i=$((i + 1))
         sleep 1
     done
-    log "WARNING: 60 秒内没有检测到挂载成功，请检查上方日志"
+    log "WARNING: ${MOUNT_TIMEOUT:-60} 秒内没有检测到挂载成功，请检查上方日志"
+    [ "$MOUNTER" = "fuse" ] && diagnose
 ) &
 
 wait "$child"
