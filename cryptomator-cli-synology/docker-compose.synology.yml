@@ -7,7 +7,7 @@
 #   path /volume1/... is mounted on /volume1 but it is not a shared mount
 services:
   cryptomator:
-    image: yujibuzailai/cryptomator-cli:latest
+    image: yujibuzailai/cryptomator-cli:synology
     container_name: cryptomator
     restart: unless-stopped
     stop_grace_period: 20s          # 给 cryptomator 留时间卸载，避免残留挂载
