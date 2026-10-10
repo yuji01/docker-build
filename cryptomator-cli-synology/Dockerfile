@@ -16,7 +16,7 @@ ENV VAULT_PATH=/cryptonator-mount \
 
 RUN set -eux; \
     apt-get update; \
-    apt-get install -y --no-install-recommends ca-certificates curl unzip fuse3 tini bash; \
+    apt-get install -y --no-install-recommends ca-certificates curl unzip fuse3 tini; \
     case "${TARGETARCH}" in \
         amd64) asset=linux-x64 ;; \
         arm64) asset=linux-aarch64 ;; \
@@ -27,7 +27,7 @@ RUN set -eux; \
     unzip -q /tmp/cli.zip -d /opt; \
     rm -f /tmp/cli.zip; \
     echo "user_allow_other" >> /etc/fuse.conf; \
-    bash /app/cryptomator-cli/cryptomator-cli_completion.sh; \
+    bash /opt/cryptomator-cli/cryptomator-cli_completion.sh; \
     apt-get purge -y --auto-remove curl unzip; \
     rm -rf /var/lib/apt/lists/*
 
