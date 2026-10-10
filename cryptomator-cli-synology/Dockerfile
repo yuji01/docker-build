@@ -16,7 +16,7 @@ ENV VAULT_PATH=/cryptonator-mount \
 
 RUN set -eux; \
     apt-get update; \
-    apt-get install -y --no-install-recommends ca-certificates curl unzip fuse3 tini; \
+    apt-get install -y --no-install-recommends ca-certificates curl unzip fuse3 tini bash; \
     case "${TARGETARCH}" in \
         amd64) asset=linux-x64 ;; \
         arm64) asset=linux-aarch64 ;; \
