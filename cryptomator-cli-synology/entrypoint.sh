@@ -23,6 +23,15 @@ VAULT_MOUNT="${VAULT_MOUNT%/}"
 MOUNTER="${MOUNTER:-fuse}"
 READY_FILE=/tmp/.cryptomator-ready
 
+# cryptomator-cli 会递归遍历 cryptomator.pluginDir（默认=当前目录）找插件。
+# 必须在空目录运行并显式指定，否则工作目录是 / 时会扫描整个文件系统（含 NAS 保险库）而卡死。
+PLUGIN_DIR="${CRYPTOMATOR_PLUGIN_DIR:-/opt/cryptomator-plugins}"
+mkdir -p "$PLUGIN_DIR" && cd "$PLUGIN_DIR" || cd /tmp
+case "${JAVA_TOOL_OPTIONS:-}" in
+    *cryptomator.pluginDir*) ;;
+    *) export JAVA_TOOL_OPTIONS="-Dcryptomator.pluginDir=$PLUGIN_DIR ${JAVA_TOOL_OPTIONS:-}" ;;
+esac
+
 log() { printf '%s [entrypoint] %s\n' "$(date '+%F %T')" "$*"; }
 
 is_fuse_mounted() {
