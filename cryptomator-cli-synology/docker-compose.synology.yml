@@ -1,0 +1,52 @@
+# 群晖 DSM 7.x（Container Manager）/ 普通 Linux 通用
+#
+# 使用前（群晖必做，每次开机后都要做一次，见下方"开机任务"）：
+#   sudo mount --make-shared /volume1        # volume1 换成你实际的存储池
+#
+# 不做这一步，容器会报：
+#   path /volume1/... is mounted on /volume1 but it is not a shared mount
+services:
+  cryptomator:
+    image: yujibuzailai/cryptomator-cli:latest
+    container_name: cryptomator
+    restart: unless-stopped
+    stop_grace_period: 20s          # 给 cryptomator 留时间卸载，避免残留挂载
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/fuse:/dev/fuse         # 只需要这一行，不要再额外写 volumes: /dev/fuse:/dev/fuse
+    security_opt:
+      - apparmor:unconfined         # 群晖没有 AppArmor，保留也无害
+    environment:
+      # 密码建议放同目录 .env 文件里（VAULT_PASS=xxx），不要直接写在 compose 里
+      VAULT_PASS: ${VAULT_PASS}
+      # 或者改用密码文件（UTF-8，优先于 VAULT_PASS）：
+      # VAULT_PASS_FILE: /run/secrets/vault_pass
+      # 非 root 的容器要访问解密目录时才需要：
+      # MOUNT_OPTIONS: "-oallow_other"
+    volumes:
+      # 加密后的保险库（目录里要有 vault.cryptomator 和 masterkey.cryptomator）
+      - /volume1/docker/immich/vault:/cryptonator-mount
+      # 解密后的挂载点：必须是 shared，这样宿主机和其它容器才能看到解密内容
+      - type: bind
+        source: /volume1/docker/immich/upload_storage
+        target: /mnt
+        bind:
+          propagation: shared
+
+  # ---- Immich 侧：只需要改"原来挂载上传目录"那一行，把传播方式改成 rslave ----
+  # immich-server:
+  #   depends_on:
+  #     cryptomator:
+  #       condition: service_healthy   # 等解密目录真正挂好再启动
+  #   volumes:
+  #     - type: bind
+  #       source: /volume1/docker/immich/upload_storage
+  #       target: <原来的容器内路径>
+  #       bind:
+  #         propagation: rslave        # cryptomator 容器重启后，这里会自动恢复可见
+
+# ---- 开机任务（DSM：控制面板 → 任务计划 → 新增 → 触发的任务 → 用户定义的脚本）----
+#   事件：开机；用户：root；脚本：
+#     mount --make-shared /volume1
+#   如果开机后 cryptomator 没起来，在脚本末尾追加一行：docker restart cryptomator

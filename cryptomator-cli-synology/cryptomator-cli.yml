@@ -1,0 +1,51 @@
+name: "Docker Build cryptomator-cli"
+
+on:
+  workflow_dispatch: # 手动运行
+    inputs:
+      cli_version:
+        description: "cryptomator/cli 的 release 版本号"
+        required: true
+        default: "0.6.2"
+
+permissions:
+  contents: read
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/cryptomator-cli
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 构建 arm64 镜像时 RUN 指令需要 QEMU 模拟
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: cryptomator-cli
+          file: cryptomator-cli/Dockerfile
+          platforms: linux/amd64,linux/arm64   # 群晖有 x86 和 ARM 两种机型
+          build-args: |
+            CRYPTOMATOR_CLI_VERSION=${{ inputs.cli_version }}
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ inputs.cli_version }}
+          # 关闭 provenance/sbom 附带的额外 manifest，旧版 Docker（含部分群晖）拉取更稳
+          provenance: false
+          sbom: false
+          push: true
