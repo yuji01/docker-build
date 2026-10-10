@@ -32,6 +32,13 @@ RUN set -eux; \
     apt-get purge -y --auto-remove curl unzip; \
     rm -rf /var/lib/apt/lists/*
 
+# 关键：cryptomator-cli 启动时会用 Files.walk 遍历 cryptomator.pluginDir 找插件 jar，
+# 该属性默认是空字符串 = 当前工作目录。工作目录若是 / ，就会把整个文件系统
+# （含挂载进来的 NAS 保险库）扫一遍，表现为 list-mounters / unlock 一直卡住无输出。
+# 所以必须在一个空目录里运行，并显式指定插件目录（docker exec 进来也生效）。
+WORKDIR /opt/cryptomator-plugins
+ENV JAVA_TOOL_OPTIONS="-Dcryptomator.pluginDir=/opt/cryptomator-plugins"
+
 COPY --chmod=0755 entrypoint.sh /entrypoint.sh
 
 # FUSE 模式下检查挂载点是否真的是 fuse 文件系统，可配合 depends_on: service_healthy
